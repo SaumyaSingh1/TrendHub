@@ -1,5 +1,5 @@
 import { useState } from "react";
-import NavBar from "./Navbar.tsx";
+
 import "./loginStyle.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -51,7 +51,7 @@ const handleContinueButton=()=>{
   };
   return (
     <>
-      <NavBar/>
+     
       <div className="flex flex-col justify-center items-center mt-40">
         <div className="childDiv h-72 w-96 rounded-md shadow-md">
           <h1 className="font-bold text-lg text-white mb-10 mt-4 ml-3 text-left">Login or Signup</h1>
