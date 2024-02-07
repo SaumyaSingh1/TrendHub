@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider  } from "react-router-dom";
 import HomePage from "./component/HomePage.tsx";
 import Inventory from "./component/Inventory.tsx";
 import Layout from "./component/Layout.tsx";
-import Product from "./component/Product.tsx";
+import Details from "./component/Details.tsx";
 function App() {
   const routes = createBrowserRouter([
     {
@@ -26,8 +26,8 @@ function App() {
           element: <Inventory />,
           },
              {
-              path: "/product/:productId",
-              element: <Product />,
+              path: "/details/:id",
+              element: <Details />,
             },
           
         

@@ -4,8 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-inline-start: -12%;
-  margin-inline-end: -130px;
+  margin-inline-start: -10%; 
+  margin-inline-end: -10%;
+  
 }
 
 #header img {

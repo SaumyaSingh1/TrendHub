@@ -167,8 +167,7 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/node
 
-Frontend/src/component/Banner.tsx
-Frontend/src/component/CategoryCards.tsx
-Frontend/src/component/HomePage.tsx
-Frontend/src/component/Navbar.tsx
-Frontend/src/component/Navbar.css
+
+
+Frontend/src/component/Product.tsx
+Frontend/.env

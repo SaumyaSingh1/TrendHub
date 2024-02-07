@@ -1,7 +1,7 @@
 
 function Footer() {
   return (
-    <div>
+    <div style={{clear:'both'}}>
       <h1>I AM FOOTER</h1>
     </div>
   )
