@@ -22,7 +22,7 @@ function App() {
           element: <Login />,
         },
         {
-          path: "inventory",
+          path: "/inventory",
           element: <Inventory />,
           },
              {

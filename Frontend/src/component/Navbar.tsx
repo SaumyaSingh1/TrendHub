@@ -6,6 +6,7 @@ import logo from '../assets/logo1.png';
 import { Link } from 'react-router-dom';
 
 export default function NavBar() {
+
   return (
     <>
       <div id="header" className="d-flex align-items-center justify-content-between">
@@ -14,11 +15,11 @@ export default function NavBar() {
         </Link>
 
         <ul className="nav">
-          <li className="nav-link">HOME</li>
-          <li className="nav-link">WOMEN</li>
-          <li className="nav-link">MEN</li>
-          <li className="nav-link">KIDS</li>
-          <li className="nav-link">BEAUTY</li>
+        <Link to='/'><li className="nav-link">HOME</li></Link>
+        <Link to='inventory' state={{category:"women's wear"}}><li className="nav-link">WOMEN</li></Link>
+          <Link to='inventory' state={{ category: "men's wear" }}><li className="nav-link">MEN</li></Link>
+          <Link to='inventory' state={{category:"kid's wear"}}><li className="nav-link">KIDS</li></Link>
+          <Link to='inventory' state={{category:"Beauty"}} ><li className="nav-link">BEAUTY</li></Link>
         </ul>
 
         <form className="search-form" role="search">

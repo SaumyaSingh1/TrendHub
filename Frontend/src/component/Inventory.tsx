@@ -26,21 +26,9 @@ function Inventory() {
       console.error("Error fetching images:", error);
     }
   };
+  const category  =  location.state && location.state.category;
 
- 
-  function extractProductName(description) {
-    const desc = description.toLowerCase();
-    const keywords = [
-      "grey",
-      "white shirt",
-      "color folded shirt",
-      "crew neck shirt",
-      "white floral tank top",
-    ];
-
-    const foundKeyword = keywords.find((keyword) => desc.includes(keyword));
-    return foundKeyword || desc;
-  }
+  console.log(category);
 
   useEffect(() => {
     if (location.state && location.state.category) {
@@ -68,7 +56,7 @@ function Inventory() {
             />
          
           <div className="absolute bottom-0 left-0 text-black p-2" style={{ width: "90%", height: "90px" }}>
-            <h6 className="mt-2 mb-1 font-bold">{extractProductName(product.alt_description)}</h6>
+            <h6 className="mt-2 mb-1 font-bold">{product.tags && product.tags[2].title}</h6>
             <p className="text-xs"><b>Cost: Rs. </b>{product.likes}</p>
           </div> </Link>
         </div>

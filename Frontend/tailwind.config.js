@@ -9,7 +9,9 @@ export default {
       colors:{
         customColor:{
           DEFAULT:'#5a4948',
-        hover:'#282120'}
+        hover:'#282120',
+        brown:'#800000'
+      }
       }
     },
   },
