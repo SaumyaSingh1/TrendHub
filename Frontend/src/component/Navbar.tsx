@@ -2,7 +2,7 @@ import './Navbar.css';
 import { CiUser } from 'react-icons/ci';
 import { GiShoppingCart } from "react-icons/gi";
 import { CiHeart } from "react-icons/ci";
-import logo from '../assets/logo1.png';
+import logo from '../assets/newnav.png';
 import { Link } from 'react-router-dom';
 
 export default function NavBar() {

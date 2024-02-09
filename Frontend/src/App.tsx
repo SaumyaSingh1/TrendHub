@@ -1,43 +1,28 @@
 import Login from "./component/Login.tsx";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { createBrowserRouter, RouterProvider  } from "react-router-dom";
+import { BrowserRouter as Router,Routes,Route  } from "react-router-dom";
 import HomePage from "./component/HomePage.tsx";
 import Inventory from "./component/Inventory.tsx";
 import Layout from "./component/Layout.tsx";
 import Details from "./component/Details.tsx";
+import Wishlist from "./component/Wishlist.tsx";
+import { ApiDataProvider } from "./context/ApiContext.tsx";
 function App() {
-  const routes = createBrowserRouter([
-    {
-      path: "/",
-      element: <Layout />,
-      children: [
-        {
-          path: "",
-          element: <HomePage />,
-        },
-        
-        {
-          path: "login",
-          element: <Login />,
-        },
-        {
-          path: "/inventory",
-          element: <Inventory />,
-          },
-             {
-              path: "/details/:id",
-              element: <Details />,
-            },
-          
-        
-           
-      ],
-    },
-  ]);
   return (
-  
-       <RouterProvider router={routes} /> 
+  <Router>
+    <Routes>
+      <Route
+       path="/" 
+       element={<Layout/>} >
+       <Route path='/' element={<HomePage/>}></Route>
+       <Route path='login' element={<Login/>}></Route>
+       <Route path='inventory' element={<ApiDataProvider><Inventory/></ApiDataProvider>}></Route>
+       <Route path='details/:id' element={<Details/>}></Route>
+       {/* <Route path='wishlist' element={<ApiProvider><Wishlist/> </ApiProvider>}></Route> */}
+      </Route>
+    </Routes>
+  </Router>
     
   );
 }
