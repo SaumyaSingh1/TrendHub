@@ -1,77 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+
 function Details() {
-  const { id } = useParams();
- 
-  const [product, setProduct] = useState({});
-  
+  const { category, productId } = useParams();
+  const [product, setProduct] = useState(null);
+  const [like, setLike] = useState(false);
+
   useEffect(() => {
-    const getProduct = async () => {
+    const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://api.unsplash.com/photos/${id}?client_id=${import.meta.env.VITE_UNSPLASH_CLIENT_ID}`);
+        const response = await fetch(`https://api.unsplash.com/photos/${productId}?client_id=${import.meta.env.VITE_UNSPLASH_CLIENT_ID}`);
 
         if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.statusText}`);
         }
+
         const clickedProduct = await response.json();
         setProduct(clickedProduct);
-      } 
-      catch (error) {
-        console.error('Error fetching images:', error);
+      } catch (error) {
+        console.error('Error fetching product:', error);
       }
     };
-    getProduct();
-  }, [id]);
+    
+    fetchProduct();
+  }, [productId]);
+
+  const handleAddToWishlist = () => {
+    // Retrieve existing liked product IDs from localStorage
+    const existingLikedProducts = JSON.parse(localStorage.getItem('likedProducts') || '[]');
+
+    // If the current product ID is not already in the liked products array, add it
+    if (!existingLikedProducts.includes(productId)) {
+      const updatedLikedProducts = [...existingLikedProducts, productId];
+      localStorage.setItem('likedProducts', JSON.stringify(updatedLikedProducts));
+      setLike(true); // Update state to indicate that the product has been added to wishlist
+    }
+  };
 
   return (
-    <>
-      <div>
-        {product.urls && 
-          <img 
-            src={product.urls.regular} 
-            alt={product.alt_description}    
-            style={{ 
-              maxWidth: '30vw', 
-              height: 'auto',
-              float: 'left', // Align the image to the left
-              marginRight: '20px',
-            }}
-            className='my-10'
-          />
-        }
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-  <h1 style={{ fontFamily: 'Arial', color: '#331a00', fontSize: '40px', marginTop: '30px' }}>
-    <b>
-      {product.tags && product.tags[2].title} {product.tags && product.tags[1].title}
-    </b>
-  </h1>
-  <hr style={{ color: 'black', width: '100%', marginTop: '10px', marginBottom: '10px' }} />
-  
-  <h3 style={{ color: '#9494b8' }}>{product.description && product.description}</h3>
-  <h3 style={{ color: '#9494b8' }}>{product.alt_description}</h3>
-  <h5 style={{ color: '#331a00' }}>
-    <b>Cost: Rs {product.likes}</b>
-  </h5>
-  <h5 style={{marginTop:'20px'}}>Select Size</h5>
-  <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-400 via-red-400 to-red-600 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-black dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
-<span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-One Size
-</span>
-
-</button>
-</div>
-  <button type="button" className="text-gray-900 my-2 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Add to Cart</button>
-  <Link to='/wishlist'><button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-black dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
-    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-      Wishlist
-    </span>
-  </button></Link>
-
-
-
-    </>
+    <div className="container mx-auto px-4 py-8">
+      {product && (
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2">
+            <img src={product.urls.regular} alt={product.alt_description} className="w-full rounded-lg" />
+          </div>
+          <div className="w-full md:w-1/2 md:pl-8">
+            <h2 className="text-3xl font-bold mb-4">{product.tags[2].title} {product.tags[1].title} {product.tags[0].title}</h2>
+            <p className="text-gray-700 mb-4">{product.description}</p>
+            <h5>Select Size:</h5>
+            <button 
+              className={`inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-black`}
+            >
+             One Size
+            </button>
+            <br/>
+            <br/>
+            <button 
+              className={`inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white mr-4 ${like ? 'bg-red-600 hover:bg-rose-500' : 'bg-rose-600 hover:bg-rose-700 '}`}
+              onClick={handleAddToWishlist}
+            >
+              <span className="mr-2">{like ? '❤️' : '🤍'}</span> {like ? 'Added to Wishlist' : 'Add to Wishlist'}
+            </button>
+            <button 
+              className={`inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-pink-900`}
+            >
+              <span >Add to cart</span>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
