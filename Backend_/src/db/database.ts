@@ -5,7 +5,7 @@ dotenv.config();
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'TrendHub',
+  database: 'trendhub',
   password: process.env.PASSWORD,
   port: 5432,
 });
