@@ -2,12 +2,12 @@ import express, { Request, Response } from 'express';
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import query from './db/database'; // Import the database query function
-import router from './routes/authRoutes'; // Import the router for authentication routes
+import authRouter from './routes/authRoutes'; // Import the router for authentication routes
 import bodyParser from 'body-parser'; // Import bodyParser to parse request bodies
 import * as dotenv from "dotenv" 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+import productRouter from './routes/products';
 // Load environment variables from a .env file
 dotenv.config();
 // Enable CORS middleware with credentials support
@@ -53,7 +53,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Mount authentication routes under the '/auth' path
-app.use('/auth', router);
+app.use('/auth', authRouter);
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
