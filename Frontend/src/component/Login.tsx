@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link,useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { backendUrl } from '../utils/config';
@@ -7,7 +7,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 const navigate=useNavigate();
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     
     try {
@@ -25,7 +25,7 @@ const navigate=useNavigate();
       navigate('/')
         console.log('userId:', userId, 'user refresh_token:', refreshToken);
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error('Error signing in:', error.message);
       // Handle error (e.g., display error message to the user)
     }
