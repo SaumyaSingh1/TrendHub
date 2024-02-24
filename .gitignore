@@ -168,8 +168,4 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node
 
 
-
-Frontend/src/component/Product.tsx
-Frontend/src/component/Login.tsx
-Frontend/src/component/Signup.tsx
 Frontend/.env
