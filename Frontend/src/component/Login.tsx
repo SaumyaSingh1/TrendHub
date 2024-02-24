@@ -1,103 +1,70 @@
-import { useState } from "react";
+// import React, { useState } from 'react';
+// import { Link } from 'react-router-dom';
+// import axios from 'axios';
+// import {backendUrl} from '../utils/config'
+// const LoginForm = () => {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
 
-import "./loginStyle.css";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import parsePhoneNumber from 'libphonenumber-js';
-function Login() {
-  const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
-  const [showOtpSection,setShowOtpSection]=useState(false)
+//   const handleSubmit = (e:any) => {
+//     e.preventDefault();
+//     // Handle form submission, such as sending data to a server
+//     console.log('Email:', email);
+//     console.log('Password:', password);
+//   };
 
-  const handlePhoneInput = (value: string) => {
-    setPhoneNumber(value);
-  };
-//VALIDATE PHONE NUMBER
-const handleValidContact = () => {
-  try {
-    if (phoneNumber) {
-      const phoneNumberObject = parsePhoneNumber(phoneNumber, 'IN');
-      return phoneNumberObject?.isValid();
-    }
-    return false;
-  } catch (error) {
-    return false;
-  }
-};
-    
-//HANDLE CONTINUE BUTTON
-const handleContinueButton=()=>{
-  if(handleValidContact()){
-    setShowOtpSection(true)}
-    else{
-     alert("Invalid Phone Number")
-    }
-  }
+//     //  // Make API call to authenticate user
+//     //  const response = await axios.post(backendUrl + "/auth/login", formData, {
+//     //   headers: {
+//     //     "Content-Type": "multipart/form-data",
+//     //   },
+//     // });
 
-  const [otp, setOtp] = useState<string | undefined>(undefined);
-  // React.ChangeEvent<HTMLInputElement> to define a TYPE for event e here input is changing event so htmlinputelement is used
-  const handleOtp = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const numericValue = event.target.value.replace(/\D/g, "");
-    //   /D/ to identify all non 0 to 9 strings
-    //   /g for global checking entinerly restrict any string to get entered
-    setOtp(numericValue);
-  };
-  const verifyOtp = () => {
-    const answer = otp !== undefined ? otp.replace(/\D/g, "") : "";
-    if (answer !== otp) {
-      alert("wrong");
-    } else {
-      alert("right");
-    }
-  };
-  return (
-    <>
-     
-      <div className="flex flex-col justify-center items-center mt-40">
-        <div className="childDiv h-72 w-96 rounded-md shadow-md">
-          <h1 className="font-bold text-lg text-white mb-10 mt-4 ml-3 text-left">Login or Signup</h1>
-          {!showOtpSection?(
-            <>
-          <div className="ml-4">
-            <PhoneInput
-              country={"in"}
-              value={phoneNumber}
-              onChange={handlePhoneInput}
-              inputStyle={{ width: "95%", padding: "0.75rem", fontSize: "1rem"}} />
-             <p className="text-sm mt-2 text-gray-600 mb-4">
-              By continuing, I agree to the <span className="text-red-700">Terms & Conditions</span>
-            </p>
-       
-          </div>  
-             <button
-              className="bg-customColor hover:bg-customColor-hover
-             text-white font-bold py-2 px-4 rounded-full mb-4" 
-             onClick={handleContinueButton}>
-              Continue
-            </button> </>
-          ):(
-            <>
-            <br/>
-          <input
-            value={otp}
-            type="text"
-            placeholder="Enter OTP"
-            className="col-15 col-lg-auto mb-3 mb-lg-0 me-lg-3 px-2"
-            onChange={handleOtp}
-          />
-       <br/>
-          <button
-            onClick={verifyOtp}
-            className="bg-customColor hover:bg-customColor-hover
-             text-white font-bold py-2 px-4 rounded-full"
-          >
-            Submit
-          </button>
-          </>)}
-        </div>
-      </div> 
-     </>
-   
-  );
-}
+//     // if (response.status === 200) {
+//     //   // Login successful, navigate to home page
+//     //   const { userId, accessToken, refreshToken } = response.data;
 
-export default Login;
+//     //   // Store tokens and user ID in browser cookies
+//     //   document.cookie = `accessToken=${accessToken}; secure; samesite=strict`;
+//     //   document.cookie = `refreshToken=${refreshToken}; secure; samesite=strict`;
+//     //   document.cookie = `user_id=${userId}; secure; samesite=strict`;
+
+//   return (
+//     <div className="max-w-md mx-auto m-4 p-6 bg-gray-100 rounded-lg shadow-lg">
+//       <h2 className="text-2xl font-semibold mb-4">Login</h2>
+//       <form onSubmit={handleSubmit}>
+//         <div className="mb-4">
+//           <label htmlFor="email" className="block text-gray-700">Email:</label>
+//           <input
+//             type="email"
+//             id="email"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+//             required
+//           />
+//         </div>
+//         <div className="mb-4">
+//           <label htmlFor="password" className="block text-gray-700">Password:</label>
+//           <input
+//             type="password"
+//             id="password"
+//             value={password}
+//             onChange={(e) => setPassword(e.target.value)}
+//             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+//             required
+//           />
+//         </div>
+//         <div className="flex justify-center">
+//           <button type="submit" className="bg-customColor hover:bg-customColor-hover
+//              text-white font-bold py-2 px-4 rounded-full">Login  </button>
+//         </div>
+//       </form>
+//       <div className="text-center">
+//         <p>Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link></p>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default LoginForm;

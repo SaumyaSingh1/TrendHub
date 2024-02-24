@@ -7,7 +7,7 @@ import bodyParser from 'body-parser'; // Import bodyParser to parse request bodi
 import * as dotenv from "dotenv" 
 const app = express();
 const PORT = process.env.PORT || 3000;
-import productRouter from './routes/products';
+
 // Load environment variables from a .env file
 dotenv.config();
 // Enable CORS middleware with credentials support
