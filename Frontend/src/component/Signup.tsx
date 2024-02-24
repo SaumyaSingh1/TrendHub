@@ -31,7 +31,7 @@ const SignupForm = () => {
 
       console.log('User signed up successfully');
       // Redirect or show success message
-    } catch (error) {
+    } catch (error:any) {
       console.error('Error signing up:', error.message);
       // Show error message to the user
     }
