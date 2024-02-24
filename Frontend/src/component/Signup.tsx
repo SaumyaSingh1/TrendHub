@@ -85,7 +85,7 @@ const SignupForm = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="address" className="block text-gray-700">Address:</label>
+          <label htmlFor="address " className="block text-gray-700">Address:</label>
           <input
             type="text"
             id="address"
@@ -112,7 +112,7 @@ const SignupForm = () => {
         </div>
       </form>
       <div className="text-center">
-        <p>Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Login</Link></p>
+        <p>Already have an account? <Link to="/login" className="text-pink-900 hover:underline">Login</Link></p>
       </div>
     </div>
   );
