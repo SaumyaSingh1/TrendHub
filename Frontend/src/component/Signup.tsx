@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import {backendUrl} from '../utils/config'
 import axios from 'axios'
 const SignupForm = () => {
+  const navigate=useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,6 +32,7 @@ const SignupForm = () => {
 
       console.log('User signed up successfully');
       // Redirect or show success message
+      navigate('/login')
     } catch (error:any) {
       console.error('Error signing up:', error.message);
       // Show error message to the user
