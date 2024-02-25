@@ -14,13 +14,13 @@ function App() {
     <Router>
       <ProductProvider>
         <Routes>
-        <Route path="/" element={<Layout/>} >
-        <Route path="/login" element={<Login/>} />
-        <Route path="/signup" element={<SignupForm/>} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/inventory/*" element={<Inventory />} />
-          <Route path="/details/:category/:productId" element={<Details />}/>
-          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/" element={<Layout/>}>
+            <Route path="/login" element={<Login/>} />
+            <Route path="/signup" element={<SignupForm/>} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/inventory/*" element={<Inventory />} />
+            <Route path="/details/:category/:productId" element={<Details />}/>
+            <Route path="/wishlist" element={<Wishlist />} />
           </Route>
         </Routes>
       </ProductProvider>

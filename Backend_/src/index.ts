@@ -5,6 +5,7 @@ import query from './db/database'; // Import the database query function
 import authRouter from './routes/authRoutes'; // Import the router for authentication routes
 import bodyParser from 'body-parser'; // Import bodyParser to parse request bodies
 import * as dotenv from "dotenv" 
+// import productRouter from './routes/products'
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -34,18 +35,19 @@ app.use(
 app.use(bodyParser.json());
 
 // Endpoint to retrieve all customers
-app.get("/customers", async (req: Request, res: Response) => {
-    try {
-        // Query the database to get all customer records
-        const result = await query('SELECT *  FROM customer');
-        // Send the retrieved customer records as JSON response
-        res.json(result.rows);
-    } catch(err) {
-        // Handle errors if any occur during database query
-        console.error('Error fetching data:', err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
+// app.get("/api/products", async (req: Request, res: Response) => {
+//     try {
+//         // Query the database to get all customer records
+//         const result = await query('SELECT *  FROM products');
+//         // Send the retrieved customer records as JSON response
+//         res.json(result.rows);
+//         console.log(result)
+//     } catch(err) {
+//         // Handle errors if any occur during database query
+//         console.error('Error fetching data:', err);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// });
 
 // Default endpoint to test server connectivity
 app.get('/', (req: Request, res: Response) => {
@@ -55,6 +57,7 @@ app.get('/', (req: Request, res: Response) => {
 // Mount authentication routes under the '/auth' path
 app.use('/auth', authRouter);
 
+// app.use('/api',productRouter)
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

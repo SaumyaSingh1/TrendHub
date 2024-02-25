@@ -1,30 +1,27 @@
-// import {Router,Request,Response} from express
-// import axios from 'axios';
+import express, { Request, Response } from 'express';
+import query from '../db/database';
 
-// const router=Router;
-// // Route to fetch data from Unsplash API
-// router.get('/api/products/:category', async (req:Request, res:Response) => {
-//   const { category } = req.params;
-//   try {
-//     // Make request to Unsplash API
-//     const response = await axios.get(`https://api.unsplash.com/search/photos`, {
-//       params: {
-//         client_id: process.env.VITE_UNSPLASH_CLIENT_ID,
-//         query: category,
-//         orientation: 'portrait'
-//       }
-//     });
+const router = express.Router();
 
-//     // Process data
-//     const products = response.data.results.map(product => ({
-//       name: product.description || product.alt_description || 'Untitled',
-//       image_url: product.urls.regular,
-//       likes: product.likes,
-//     }));
+router.post('/products', async (req: Request, res: Response) => {
+  try {
+    // Extract category and products data from request body
+    const { category, products } = req.body;
 
-//     res.json(products);
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
+    // Insert each product into the database
+    for (const product of products) {
+      const { alt_description } = product;
+      const queryText = 'INSERT INTO products ( product_name) VALUES ($1)';
+      const values = [ alt_description];
+      await query(queryText, values);
+    }
+
+    res.status(201).json({ message: 'Products saved successfully' });
+    console.log('Products saved');
+  } catch (error) {
+    console.error('Error saving products:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+export default router;

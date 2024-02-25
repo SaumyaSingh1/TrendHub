@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Wishlist() {
+export default function Wishlist({ category }) {
   const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
@@ -35,10 +35,10 @@ export default function Wishlist() {
       <h2 className="text-3xl font-bold mb-4">Wishlist Page</h2>
       {wishlist.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {wishlist.map((product, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md">
-              <Link to={`/details/${product.id}`}>
-                <img src={product.urls.regular} alt={`Product ${index}`} className="w-full h-64 object-cover rounded-t-lg" />
+          {wishlist.map((product) => (
+            <div key={product.id} className="bg-white rounded-lg shadow-md">
+              <Link to={`/details/${category}/${product.id}`}>
+                <img src={product.urls.regular} alt={`Product ${product.id}`} className="w-full h-64 object-cover rounded-t-lg" />
               </Link>
               <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{product.alt_description}</h3>
@@ -51,4 +51,5 @@ export default function Wishlist() {
         <p>No items in your wishlist</p>
       )}
     </div>
-  );}
+  );
+}

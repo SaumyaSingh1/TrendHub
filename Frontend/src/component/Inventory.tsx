@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ProductContext } from '../context/ProductContext';
 import './Inventory.css';
-
 function Inventory() {
   const { products, category } = useContext(ProductContext);
    console.log(products);
