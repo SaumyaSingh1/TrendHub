@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  {  useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import {backendUrl} from '../utils/config'
 import axios from 'axios'
@@ -11,7 +11,7 @@ const SignupForm = () => {
   const [address, setAddress] = useState('');
   const [contact, setContact] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
