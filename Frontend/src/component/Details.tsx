@@ -1,35 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { ProductContext } from '../context/ProductContext';
 import { backendUrl } from '../utils/config';
 function Details() {
-  const { category, productId } = useParams();
-  const [product, setProduct] = useState(null);
+ let {  productId } = useParams();
+  const { category, products } = useContext(ProductContext);
+  const product = products.find(product => product.id === productId);
   const [like, setLike] = useState(false);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await fetch(`https://api.unsplash.com/photos/${productId}?client_id=${import.meta.env.VITE_UNSPLASH_CLIENT_ID}`);
-
-        if (!response.ok) {
-          throw new Error(`Network response was not ok: ${response.statusText}`);
-        }
-
-        const clickedProduct = await response.json();
-        setProduct(clickedProduct);
-      } catch (error) {
-        console.error('Error fetching product:', error);
-      }
-    };
-    
-    fetchProduct();
-  }, [productId]);
 
   const handleAddToWishlist = async () => {
     try {
       const existingLikedProducts = JSON.parse(localStorage.getItem('likedProducts') || '[]');
   
-      if (!existingLikedProducts.includes(productId)) {
+      if (!existingLikedProducts.includes(productId)&&product) {
         const updatedLikedProducts = [...existingLikedProducts, productId];
         localStorage.setItem('likedProducts', JSON.stringify(updatedLikedProducts));
         setLike(true);
