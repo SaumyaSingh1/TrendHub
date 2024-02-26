@@ -2,19 +2,22 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductContext } from '../context/ProductContext';
 import { backendUrl } from '../utils/config';
+import { useCookies } from 'react-cookie';
+
 function Details() {
  let {  productId } = useParams();
   const { category, products } = useContext(ProductContext);
   const product = products.find(product => product.id === productId);
   const [like, setLike] = useState(false);
+  console.log('productId:', productId);
+  const productIdNumericPart = productId.replace(/\D/g, '');
+  // Convert to integer
+  const productIdInt = parseInt(productIdNumericPart, 10);
+console.log(productIdInt);
 
   const handleAddToWishlist = async () => {
     try {
-      const existingLikedProducts = JSON.parse(localStorage.getItem('likedProducts') || '[]');
-  
-      if (!existingLikedProducts.includes(productId)&&product) {
-        const updatedLikedProducts = [...existingLikedProducts, productId];
-        localStorage.setItem('likedProducts', JSON.stringify(updatedLikedProducts));
+      if (product) {
         setLike(true);
   
         const response = await fetch(`${backendUrl}/api/product`, {
@@ -23,17 +26,34 @@ function Details() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            productId: productId,
-            productName: product.alt_description, // Assuming product.name is the product name
-             productCost:product.likes,
-             productImage:product.urls.regular,
-            //  productType:category,
-             productSize:"One Size",
+            productId: productIdInt,
+            productName: product.alt_description,
+            productCost: product.likes,
+            productImage: product.urls.regular,
+            productSize: "One Size",
           }),
         });
-      
+  
         if (!response.ok) {
           throw new Error(`Failed to add product to wishlist: ${response.statusText}`);
+        }
+  
+        console.log('Product added to wishlist successfully');
+      
+        // Add the product to the wishlist table in the backend
+        const wishlistResponse = await fetch(`${backendUrl}/api/wishlist`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+          productId:productIdInt
+
+          }),
+        });
+  
+        if (!wishlistResponse.ok) {
+          throw new Error(`Failed to add product to wishlist: ${wishlistResponse.statusText}`);
         }
   
         console.log('Product added to wishlist successfully');
@@ -42,6 +62,8 @@ function Details() {
       console.error('Error adding product to wishlist:', error);
     }
   };
+  
+
   
   return (
     <div className="container mx-auto px-4 py-8">

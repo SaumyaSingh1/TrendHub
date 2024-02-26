@@ -6,6 +6,7 @@ import authRouter from './routes/authRoutes'; // Import the router for authentic
 import bodyParser from 'body-parser'; // Import bodyParser to parse request bodies
 import * as dotenv from "dotenv" 
  import productRouter from './routes/products'
+ import wishlistRouter from './routes/wishlist'
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -34,14 +35,13 @@ app.use(
 // Middleware to parse JSON bodies without it body of incoming data from client can't be read by server 
 app.use(bodyParser.json());
 
-//Endpoint to retrieve all customers
-app.get("/api/product", async (req: Request, res: Response) => {
+///Endpoint to retrieve all wishlist items
+app.get("/api/wishlist", async (req: Request, res: Response) => {
     try {
-        // Query the database to get all customer records
-        const result = await query('SELECT *  FROM product');
-        // Send the retrieved customer records as JSON response
+        // Query the database to get all wishlist items
+        const result = await query('SELECT * FROM wishlist');
+        // Send the retrieved wishlist items as JSON response
         res.json(result.rows);
-        console.log("Result is :")
     } catch(err) {
         // Handle errors if any occur during database query
         console.error('Error fetching data:', err);
@@ -59,6 +59,10 @@ app.use('/auth', authRouter);
 
  app.use('/api',productRouter)
 // Start the server and listen on the specified port
+
+app.use('/api',wishlistRouter)
+// Start the server and listen on the specified port
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
