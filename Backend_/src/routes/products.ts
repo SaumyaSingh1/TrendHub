@@ -3,18 +3,19 @@ import query from '../db/database';
 
 const router = express.Router();
 
-router.post('/products', async (req: Request, res: Response) => {
+router.post('/product', async (req: Request, res: Response) => {
   try {
     // Extract category and products data from request body
-    const { category, products } = req.body;
+    const { productName,productCost,productImage,productSize } = req.body;
 
+console.log("Frontend data",req.body)
     // Insert each product into the database
-    for (const product of products) {
-      const { alt_description } = product;
-      const queryText = 'INSERT INTO products ( product_name) VALUES ($1)';
-      const values = [ alt_description];
+  
+      // const { productName } = product;
+      const queryText = 'INSERT INTO product (product_name,product_cost,product_image,product_size) VALUES ($1,$2,$3,$4)';
+      const values = [productName,productCost,productImage,productSize ];
       await query(queryText, values);
-    }
+    
 
     res.status(201).json({ message: 'Products saved successfully' });
     console.log('Products saved');

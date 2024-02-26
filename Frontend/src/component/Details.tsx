@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { backendUrl } from '../utils/config';
 function Details() {
   const { category, productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -25,18 +25,41 @@ function Details() {
     fetchProduct();
   }, [productId]);
 
-  const handleAddToWishlist = () => {
-    // Retrieve existing liked product IDs from localStorage
-    const existingLikedProducts = JSON.parse(localStorage.getItem('likedProducts') || '[]');
-
-    // If the current product ID is not already in the liked products array, add it
-    if (!existingLikedProducts.includes(productId)) {
-      const updatedLikedProducts = [...existingLikedProducts, productId];
-      localStorage.setItem('likedProducts', JSON.stringify(updatedLikedProducts));
-      setLike(true); // Update state to indicate that the product has been added to wishlist
+  const handleAddToWishlist = async () => {
+    try {
+      const existingLikedProducts = JSON.parse(localStorage.getItem('likedProducts') || '[]');
+  
+      if (!existingLikedProducts.includes(productId)) {
+        const updatedLikedProducts = [...existingLikedProducts, productId];
+        localStorage.setItem('likedProducts', JSON.stringify(updatedLikedProducts));
+        setLike(true);
+  
+        const response = await fetch(`${backendUrl}/api/product`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            productId: productId,
+            productName: product.alt_description, // Assuming product.name is the product name
+             productCost:product.likes,
+             productImage:product.urls.regular,
+            //  productType:category,
+             productSize:"One Size",
+          }),
+        });
+      
+        if (!response.ok) {
+          throw new Error(`Failed to add product to wishlist: ${response.statusText}`);
+        }
+  
+        console.log('Product added to wishlist successfully');
+      }
+    } catch (error) {
+      console.error('Error adding product to wishlist:', error);
     }
   };
-
+  
   return (
     <div className="container mx-auto px-4 py-8">
       {product && (
@@ -45,8 +68,11 @@ function Details() {
             <img src={product.urls.regular} alt={product.alt_description} className="w-full rounded-lg" />
           </div>
           <div className="w-full md:w-1/2 md:pl-8">
+           
             <h2 className="text-3xl font-bold mb-4">{product.tags[2].title} {product.tags[1].title} {product.tags[0].title}</h2>
-            <p className="text-gray-700 mb-4">{product.description}</p>
+            <p className="text-gray-700 mb-4">{product.description}</p> 
+            <h2>Cost:Rs.<b>{product.likes}</b></h2>
+            <br/>
             <h5>Select Size:</h5>
             <button 
               className={`inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-black`}

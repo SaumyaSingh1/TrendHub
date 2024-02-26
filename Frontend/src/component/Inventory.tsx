@@ -22,7 +22,7 @@ function Inventory() {
               <h6 className="product-title">{product.alt_description}</h6>
               <p className="product-cost">
                 <b>Cost: Rs. </b>
-                {product.likes} {/* Assuming product.cost represents the cost */}
+                {product.likes}
               </p>
             </div>
           </div>
