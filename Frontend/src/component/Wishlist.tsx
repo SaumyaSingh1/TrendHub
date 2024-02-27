@@ -42,7 +42,7 @@ const Wishlist = () => {
                 <img src={product.product_image} alt={product.product_name} className="w-full h-48 object-cover" />
                 <div className="p-4">
                   <p className="text-lg font-semibold mb-2">{product.product_name}</p>
-                  <p className="text-gray-600">{product.product_cost}</p>
+                  <p className="text-gray-600">Cost:<b> Rs.{product.product_cost}</b></p>
                 </div>
               </Link>
             </div>
