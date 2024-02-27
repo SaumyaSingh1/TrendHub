@@ -17,6 +17,7 @@ console.log(productIdInt);
   const handleAddToWishlist = async () => {
     try {
       if (product) {
+    
         setLike(true);
         //saving product data to backend when wishlist button clicked
         const response = await fetch(`${backendUrl}/api/product`, {
@@ -41,29 +42,27 @@ console.log(productIdInt);
          console.log('product added to product table')
         // Add the product to the wishlist table in the backend
         const wishlistResponse = await fetch(`${backendUrl}/api/wishlist`, {
-          method: 'POST',
+          method:like ? 'DELETE' : 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           credentials: 'include',
           body: JSON.stringify({
-          productId:productIdInt
-
+            productId: productIdInt,
           }),
         });
-
-        if (!wishlistResponse.ok) {
-          throw new Error(`Failed to add product to wishlist: ${wishlistResponse.statusText}`);
-        }
   
-        console.log('Product added to wishlist successfully');
+        if (wishlistResponse.ok) {
+          setLike(!like);
+          console.log(like ? 'Removed from wishlist' : 'Added to wishlist');
+        } else {
+          throw new Error(`Failed to toggle wishlist status: ${wishlistResponse.statusText}`);
+        }
       }
     } catch (error) {
-      console.error('Error adding product to wishlist:', error);
+      console.error('Error toggling wishlist status:', error);
     }
   };
-  
-
   return (
     <div className="container mx-auto px-4 py-8">
       {product && (

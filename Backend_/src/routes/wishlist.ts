@@ -37,6 +37,34 @@ router.post('/wishlist', authenticateMiddleware, async (req: Request, res: Respo
   }
 });
 
+router.delete('/wishlist', authenticateMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.body; // Extract productId from request body
+
+    // Verify the access token
+    const accessToken = req.newAccessToken || req.cookies.accessToken;
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
+    const decodedToken = verifyToken(accessToken, accessSecret);
+
+    // Ensure decodedToken is not null
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Extract the userId from the decoded token
+    const userId: number = decodedToken.user_id;
+
+    // Delete the product from the wishlist table
+    await query('DELETE FROM wishlist WHERE user_id = $1 AND product_id = $2', [userId, productId]);
+
+    res.status(200).json({ message: 'Product removed from wishlist' });
+  } catch (error) {
+    console.error('Error removing product from wishlist:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 // GET route to fetch products from the wishlist
 router.get('/wishlists', authenticateMiddleware, async (req: Request, res: Response) => {
 
@@ -55,6 +83,8 @@ router.get('/wishlists', authenticateMiddleware, async (req: Request, res: Respo
     // Extract the userId from the decoded token
     const userId: number = decodedToken.user_id;
     console.log("userId",userId)
+
+
     // Query the database to fetch productIds from the wishlist for the userId
     const result = await query('SELECT product_id FROM wishlist WHERE user_id = $1', [userId]);
 
