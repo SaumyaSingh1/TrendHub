@@ -103,8 +103,8 @@ console.log(productIdInt);
         });
   
         if (cartResponse.ok) {
-          setCart(!like);
-          console.log(like ? 'Removed from cart' : 'Added to cart');
+          setCart(!cart);
+          console.log(cart ? 'Removed from cart' : 'Added to cart');
         } else {
           throw new Error(`Failed to toggle cart status: ${cartResponse.statusText}`);
         }
