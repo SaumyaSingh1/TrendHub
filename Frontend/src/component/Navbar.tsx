@@ -32,9 +32,17 @@ export default function NavBar() {
         </form>
 
         <div className="user-container">
-          <CiUser className="user" />
-       <Link to='wishlist'>   <CiHeart className="user" /></Link>
-          <GiShoppingCart className="user" />
+         <Link to='userAccount'>
+          <CiUser className="user" /></Link>
+
+       <Link to='wishlist'>  
+        <CiHeart className="user" />
+        </Link>
+
+         <Link to='addtocart'> 
+         <GiShoppingCart className="user" />
+         </Link>
+
         </div>
       </div>
     </>

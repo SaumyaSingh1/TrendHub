@@ -8,7 +8,8 @@ import Details from './component/Details';
 import Layout from './component/Layout';
 import Wishlist from './component/Wishlist';
 import SignupForm from './component/Signup';
-
+import AddToCart from './component/AddToCart';
+import UserAccount from './component/UserAccount';
 function App() {
   return (
     <Router>
@@ -21,6 +22,9 @@ function App() {
             <Route path="/inventory/*" element={<Inventory />} />
             <Route path="/details/:productId" element={<Details />}/>
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/addtocart" element={<AddToCart />} />
+            <Route path="/userAccount" element={<UserAccount />} />
+            
           </Route>
         </Routes>
       </ProductProvider>

@@ -8,6 +8,7 @@ function Details() {
   const {  products } = useContext(ProductContext);
   const product = products.find(product => product.id === productId);
   const [like, setLike] = useState(false);
+  const [cart, setCart] = useState(false);
   console.log('productId:', productId);
   const productIdNumericPart = productId.replace(/\D/g, '');
   // Convert to integer
@@ -63,6 +64,55 @@ console.log(productIdInt);
       console.error('Error toggling wishlist status:', error);
     }
   };
+  const handleAddToCart= async()=>{
+    try {
+      if (product) {
+    
+        setCart(true);
+        //saving product data to backend when wishlist button clicked
+        const response = await fetch(`${backendUrl}/api/product`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials:'include',
+          body: JSON.stringify({
+            productID: productIdInt,
+            imageId:productId,
+            productName: product.alt_description,
+            productCost: product.likes,
+            productImage: product.urls.regular,
+            productSize: "One Size",
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Failed to add product to products table: ${response.statusText}`);
+        }
+         console.log('product added to product table')
+        // Add the product to the wishlist table in the backend
+        const cartResponse = await fetch(`${backendUrl}/api/wishlist`, {
+          method:like ? 'DELETE' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            productId: productIdInt,
+          }),
+        });
+  
+        if (cartResponse.ok) {
+          setCart(!like);
+          console.log(like ? 'Removed from cart' : 'Added to cart');
+        } else {
+          throw new Error(`Failed to toggle cart status: ${cartResponse.statusText}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling cart status:', error);
+    }
+  }
   return (
     <div className="container mx-auto px-4 py-8">
       {product && (
@@ -90,7 +140,7 @@ console.log(productIdInt);
             >
               <span className="mr-2">{like ? '❤️' : '🤍'}</span> {like ? 'Added to Wishlist' : 'Add to Wishlist'}
             </button>
-            <button 
+            <button  onClick={handleAddToWishlist}
               className={`inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-pink-900`}
             >
               <span >Add to cart</span>
