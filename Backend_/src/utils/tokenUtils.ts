@@ -9,7 +9,7 @@ console.log(process.env.REFRESH_TOKEN_SECRET);
 // Define the structure of the JWT payload
 interface TokenPayload {
   user_id: number;
-  email: string;
+  // email?: string;
 }
 
 // Function to generate an access token based on the provided payload

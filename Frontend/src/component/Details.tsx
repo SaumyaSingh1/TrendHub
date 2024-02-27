@@ -19,12 +19,13 @@ console.log(productIdInt);
     try {
       if (product) {
         setLike(true);
-  
+        //saving product data to backend when wishlist button clicked
         const response = await fetch(`${backendUrl}/api/product`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          credentials:'include',
           body: JSON.stringify({
             productId: productIdInt,
             productName: product.alt_description,
@@ -35,23 +36,22 @@ console.log(productIdInt);
         });
   
         if (!response.ok) {
-          throw new Error(`Failed to add product to wishlist: ${response.statusText}`);
+          throw new Error(`Failed to add product to products table: ${response.statusText}`);
         }
-  
-        console.log('Product added to wishlist successfully');
-      
+         console.log('product added to product table')
         // Add the product to the wishlist table in the backend
         const wishlistResponse = await fetch(`${backendUrl}/api/wishlist`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          credentials: 'include',
           body: JSON.stringify({
           productId:productIdInt
 
           }),
         });
-  
+
         if (!wishlistResponse.ok) {
           throw new Error(`Failed to add product to wishlist: ${wishlistResponse.statusText}`);
         }
@@ -64,7 +64,6 @@ console.log(productIdInt);
   };
   
 
-  
   return (
     <div className="container mx-auto px-4 py-8">
       {product && (

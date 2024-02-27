@@ -24,5 +24,20 @@ console.log("Frontend data",req.body)
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+router.get('/product', async (req, res) => {
+  try {
+    // Query the database to fetch all product IDs
+    const result = await query('SELECT product_id FROM product');
+
+    // Extract product IDs from the query result
+    const productIds = result.rows.map(row => row.product_id);
+
+    // Send the product IDs as JSON response
+    res.json({ productIds });
+  } catch (error) {
+    console.error('Error fetching product IDs:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 export default router;

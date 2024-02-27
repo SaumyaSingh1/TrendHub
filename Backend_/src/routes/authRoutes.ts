@@ -38,8 +38,8 @@ router.post('/signup', async (req: Request, res: Response) => {
         );
 
         // Generate access and refresh tokens
-        const accessToken = generateAccessToken({ user_id: result.rows[0].user_id, email });
-        const refreshToken = generateRefreshToken({ user_id: result.rows[0].user_id, email });
+        const accessToken = generateAccessToken({ user_id: result.rows[0].user_id });
+        const refreshToken = generateRefreshToken({ user_id: result.rows[0].user_id });
 
         // Store refresh token in the database
         await query<customer>('UPDATE customer SET refresh_token =$1 WHERE user_id=$2', [refreshToken, result.rows[0].user_id]);
@@ -83,8 +83,8 @@ router.post('/login', async (req: Request, res: Response) => {
 
         // Generate tokens
         const userId = user.user_id;
-        const accessToken = generateAccessToken({ user_id: userId, email });
-        const refreshToken = generateRefreshToken({ user_id: userId, email });
+        const accessToken = generateAccessToken({ user_id: userId});
+        const refreshToken = generateRefreshToken({ user_id: userId });
 
         // Store refresh token in the database
         await query<customer>('UPDATE customer SET refresh_token=$1 WHERE user_id=$2', [refreshToken, userId]);
@@ -92,6 +92,7 @@ router.post('/login', async (req: Request, res: Response) => {
         // Send tokens and user ID in the response
         res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
         res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+        res.cookie('userId', userId, { httpOnly: true, secure: true, sameSite: 'strict' });
         res.status(200).json({ userId, accessToken, refreshToken, message: 'Login successful' });
     } catch (error: any) {
         // Handle errors during login

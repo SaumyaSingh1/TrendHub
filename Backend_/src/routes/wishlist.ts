@@ -1,37 +1,78 @@
-import express,{Router,Request,Response, NextFunction} from 'express';
-
+import express, { Router, Request, Response } from 'express';
 import query from '../db/database';
+import authenticateMiddleware from '../middlewares/authMiddleware';
+import { verifyToken } from '../utils/tokenUtils';
+
 const router = express.Router();
 
-router.post('/wishlist', async (req, res) => {
-  const {  productId } = req.body;
-
+// POST route to add a product to the wishlist
+router.post('/wishlist', authenticateMiddleware, async (req: Request, res: Response) => {
   try {
-    // Your database query to insert into the wishlist table
-    // Example:
-     await query('INSERT INTO wishlist ( product_id) VALUES ($1)', [ productId]);
+    // Extract productId from the request body
+    const { productId } = req.body;
+    console.log("Product id is", productId);
 
+    // Verify the access token
+    const accessToken = req.newAccessToken || req.cookies.accessToken;
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
+    const decodedToken = verifyToken(accessToken, accessSecret);
+
+    // Ensure decodedToken is not null
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Extract the userId from the decoded token
+    const userId: number = decodedToken.user_id;
+    console.log(userId);
+
+    // Insert productId into the wishlist table
+    await query('INSERT INTO wishlist (product_id, user_id) VALUES ($1, $2)', [productId, userId]);
+
+    // Send success response
     res.status(201).json({ message: 'Product added to wishlist successfully' });
   } catch (error) {
     console.error('Error adding product to wishlist:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-  
 });
-router.get('/wishlist', async (req: Request, res: Response) => {
+
+// GET route to fetch products from the wishlist
+router.get('/wishlists', authenticateMiddleware, async (req: Request, res: Response) => {
+
   try {
-    // Query the wishlist table to get product IDs
-    const result = await query('SELECT product_id FROM wishlist');
+
+    // Verify the access token
+    const accessToken = req.newAccessToken || req.cookies.accessToken;
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
+    const decodedToken = verifyToken(accessToken, accessSecret);
+
+    // Ensure decodedToken is not null
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Extract the userId from the decoded token
+    const userId: number = decodedToken.user_id;
+    console.log("userId",userId)
+    // Query the database to fetch productIds from the wishlist for the userId
+    const result = await query('SELECT product_id FROM wishlist WHERE user_id = $1', [userId]);
+
+ console.log("result",result)
+
+    // Extract productIds from the query result
     const productIds = result.rows.map((row: any) => row.product_id);
+    console.log("productIds",productIds)
+    // Query the product table to fetch products based on productIds
+    const productsResult = await query('SELECT * FROM product WHERE product_id = ANY($1)', [productIds]);
 
-    // Query the products table to get details of products with the fetched product IDs
-    const productsResult = await query('SELECT * FROM products WHERE id IN ($1)', [productIds]);
-
-    // Send the retrieved products as JSON response
-    res.json(productsResult.rows);
+    // Send the fetched products as JSON response
+    const products = productsResult.rows;
+    res.json({ products });
   } catch (error) {
-    console.error('Error fetching wishlist:', error);
+    console.error('Error fetching products from wishlist:', error);
     res.status(500).json({ error: 'Internal server error' });
-  }});
+  }
+});
 
 export default router;
