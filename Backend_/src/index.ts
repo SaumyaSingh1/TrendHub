@@ -7,6 +7,7 @@ import bodyParser from 'body-parser'; // Import bodyParser to parse request bodi
 import * as dotenv from "dotenv" 
  import productRouter from './routes/products'
  import wishlistRouter from './routes/wishlist'
+ import cartRouter from './routes/CartRoute'
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -58,10 +59,13 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/auth', authRouter);
 
  app.use('/api',productRouter)
-// Start the server and listen on the specified port
+
 
 app.use('/api',wishlistRouter)
+
+app.use('/api',cartRouter)
 // Start the server and listen on the specified port
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

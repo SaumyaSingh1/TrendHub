@@ -91,7 +91,7 @@ console.log(productIdInt);
         }
          console.log('product added to product table')
         // Add the product to the wishlist table in the backend
-        const cartResponse = await fetch(`${backendUrl}/api/wishlist`, {
+        const cartResponse = await fetch(`${backendUrl}/api/addtocart`, {
           method:like ? 'DELETE' : 'POST',
           headers: {
             'Content-Type': 'application/json',
