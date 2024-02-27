@@ -11,7 +11,7 @@ function Inventory() {
       <div className="product-grid">
         {products.map((product) => (
           <div className="product-item" key={product.id}>
-            <Link to={`/details/${category}/${product.id}`}>
+            <Link to={`/details/${product.id}`}>
               <img
                 src={product.urls.regular}
                 className="product-image"

@@ -19,7 +19,7 @@ function App() {
             <Route path="/signup" element={<SignupForm/>} />
             <Route path="/" element={<HomePage />} />
             <Route path="/inventory/*" element={<Inventory />} />
-            <Route path="/details/:category/:productId" element={<Details />}/>
+            <Route path="/details/:productId" element={<Details />}/>
             <Route path="/wishlist" element={<Wishlist />} />
           </Route>
         </Routes>

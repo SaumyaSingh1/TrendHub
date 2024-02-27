@@ -2,11 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductContext } from '../context/ProductContext';
 import { backendUrl } from '../utils/config';
-import { useCookies } from 'react-cookie';
 
 function Details() {
  let {  productId } = useParams();
-  const { category, products } = useContext(ProductContext);
+  const {  products } = useContext(ProductContext);
   const product = products.find(product => product.id === productId);
   const [like, setLike] = useState(false);
   console.log('productId:', productId);
@@ -27,7 +26,8 @@ console.log(productIdInt);
           },
           credentials:'include',
           body: JSON.stringify({
-            productId: productIdInt,
+            productID: productIdInt,
+            imageId:productId,
             productName: product.alt_description,
             productCost: product.likes,
             productImage: product.urls.regular,
