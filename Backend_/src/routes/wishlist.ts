@@ -10,7 +10,7 @@ router.post('/wishlist', authenticateMiddleware, async (req: Request, res: Respo
   try {
     // Extract productId from the request body
     const { productId } = req.body;
-    console.log("Product id is", productId);
+   // console.log("Product id is", productId);
 
     // Verify the access token
     const accessToken = req.newAccessToken || req.cookies.accessToken;
@@ -24,7 +24,7 @@ router.post('/wishlist', authenticateMiddleware, async (req: Request, res: Respo
 
     // Extract the userId from the decoded token
     const userId: number = decodedToken.user_id;
-    console.log(userId);
+   // console.log(userId);
 
     // Insert productId into the wishlist table
     await query('INSERT INTO wishlist (product_id, user_id) VALUES ($1, $2)', [productId, userId]);
@@ -32,7 +32,7 @@ router.post('/wishlist', authenticateMiddleware, async (req: Request, res: Respo
     // Send success response
     res.status(201).json({ message: 'Product added to wishlist successfully' });
   } catch (error) {
-    console.error('Error adding product to wishlist:', error);
+   // console.error('Error adding product to wishlist:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -59,7 +59,7 @@ router.delete('/wishlist', authenticateMiddleware, async (req: Request, res: Res
 
     res.status(200).json({ message: 'Product removed from wishlist' });
   } catch (error) {
-    console.error('Error removing product from wishlist:', error);
+    //console.error('Error removing product from wishlist:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -82,17 +82,17 @@ router.get('/wishlists', authenticateMiddleware, async (req: Request, res: Respo
 
     // Extract the userId from the decoded token
     const userId: number = decodedToken.user_id;
-    console.log("userId",userId)
+   // console.log("userId",userId)
 
 
     // Query the database to fetch productIds from the wishlist for the userId
     const result = await query('SELECT product_id FROM wishlist WHERE user_id = $1', [userId]);
 
- console.log("result",result)
+ //console.log("result",result)
 
     // Extract productIds from the query result
     const productIds = result.rows.map((row: any) => row.product_id);
-    console.log("productIds",productIds)
+   // console.log("productIds",productIds)
     // Query the product table to fetch products based on productIds
     const productsResult = await query('SELECT * FROM product WHERE product_id = ANY($1)', [productIds]);
 
@@ -100,7 +100,7 @@ router.get('/wishlists', authenticateMiddleware, async (req: Request, res: Respo
     const products = productsResult.rows;
     res.json({ products });
   } catch (error) {
-    console.error('Error fetching products from wishlist:', error);
+  //  console.error('Error fetching products from wishlist:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

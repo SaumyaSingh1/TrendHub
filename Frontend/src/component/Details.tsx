@@ -68,8 +68,10 @@ console.log(productIdInt);
     try {
       if (product) {
     
-        setCart(true);
-        //saving product data to backend when wishlist button clicked
+       // Toggle cart status
+       setCart(prevCart => !prevCart);
+
+        //saving product data to backend when add to cart button clicked
         const response = await fetch(`${backendUrl}/api/product`, {
           method: 'POST',
           headers: {
@@ -90,9 +92,9 @@ console.log(productIdInt);
           throw new Error(`Failed to add product to products table: ${response.statusText}`);
         }
          console.log('product added to product table')
-        // Add the product to the wishlist table in the backend
-        const cartResponse = await fetch(`${backendUrl}/api/addtocart`, {
-          method:like ? 'DELETE' : 'POST',
+         // Add or remove product from the cart
+         const cartResponse = await fetch(`${backendUrl}/api/addtocart`, {
+          method: cart ? 'DELETE' : 'POST', // If product is already in cart, send DELETE request
           headers: {
             'Content-Type': 'application/json',
           },
@@ -101,18 +103,16 @@ console.log(productIdInt);
             productId: productIdInt,
           }),
         });
-  
-        if (cartResponse.ok) {
-          setCart(!cart);
-          console.log(cart ? 'Removed from cart' : 'Added to cart');
-        } else {
+
+        if (!cartResponse.ok) {
           throw new Error(`Failed to toggle cart status: ${cartResponse.statusText}`);
         }
+        console.log(cart ? 'Removed from cart' : 'Added to cart');
       }
     } catch (error) {
       console.error('Error toggling cart status:', error);
     }
-  }
+  };
   return (
     <div className="container mx-auto px-4 py-8">
       {product && (
@@ -140,10 +140,10 @@ console.log(productIdInt);
             >
               <span className="mr-2">{like ? '❤️' : '🤍'}</span> {like ? 'Added to Wishlist' : 'Add to Wishlist'}
             </button>
-            <button  onClick={handleAddToWishlist}
+            <button  onClick={handleAddToCart}
               className={`inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-pink-900`}
             >
-              <span >Add to cart</span>
+             <span className="mr-2">{cart ? '🛒' : '🛍️'}</span> {cart ? 'Remove from Cart' : 'Add to Cart'}
             </button>
           </div>
         </div>
