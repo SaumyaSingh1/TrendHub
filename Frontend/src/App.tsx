@@ -10,6 +10,8 @@ import Wishlist from './component/Wishlist';
 import SignupForm from './component/Signup';
 import AddToCart from './component/AddToCart';
 import UserAccount from './component/UserAccount';
+import Orders from './component/Orders';
+import OrderConfirmation from './component/OrderConfirmation';
 function App() {
   return (
     <Router>
@@ -24,7 +26,8 @@ function App() {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/addtocart" element={<AddToCart />} />
             <Route path="/userAccount" element={<UserAccount />} />
-            
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/OrderConfirmation" element={<OrderConfirmation/>}/>
           </Route>
         </Routes>
       </ProductProvider>

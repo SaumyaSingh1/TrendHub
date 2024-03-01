@@ -62,33 +62,33 @@ router.post('/login', async (req: Request, res: Response) => {
     try {
         // Extract email and password from request body
         let { email, password }: customer = req.body;
-
+           console.log(email);
         // Validate email and password
         if (!email || !password) {
             console.log("Please provide email and password both!");
         }
-
+        console.log("2nd");
         // Check if customer exists
         const customerExist = await query<customer>('SELECT * FROM customer WHERE email=$1', [email]);
         if (customerExist.rows.length === 0) {
             return res.status(400).json({ message: 'Customer does not exist' });
         }
-
+        console.log("3rd");
         // Validate password
         const user = customerExist.rows[0];
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
             return res.status(400).json({ message: 'Invalid Password' });
         }
-
+        console.log("4th");
         // Generate tokens
         const userId = user.user_id;
         const accessToken = generateAccessToken({ user_id: userId});
         const refreshToken = generateRefreshToken({ user_id: userId });
-
+        console.log(userId);
         // Store refresh token in the database
         await query<customer>('UPDATE customer SET refresh_token=$1 WHERE user_id=$2', [refreshToken, userId]);
-
+        console.log("refresh token:",refreshToken);
         // Send tokens and user ID in the response
         res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
         res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
