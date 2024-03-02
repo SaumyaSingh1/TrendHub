@@ -10,6 +10,7 @@ const AddToCart = () => {
   const [userId, setUserId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
 
+
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -19,6 +20,7 @@ const AddToCart = () => {
 
         const { products, userId } = response.data;
         setProducts(products);
+        console.log(products)
         setUserId(userId);
 
         // Calculate the total price when cart is fetched
@@ -33,19 +35,22 @@ const AddToCart = () => {
     fetchCart();
   }, []);
 
- const handleBuyNowClick = async (productId:number) => {
+ const handleBuyNowClick = async (imageId) => {
   try {
-    const response = await axios.post(`${backendUrl}/api/checkout`, { productId },{
+    const response = await axios.post(`${backendUrl}/api/checkout`, { imageId },{
       withCredentials:true
     });
   
         if (!response) {
             throw new Error('Failed to process order');
         }
+        const orderConfirmationUrl = `http://localhost:5173/OrderConfirmation?imageId=${imageId}`;
+         window.location.href = orderConfirmationUrl;
+       
 
-        // Redirect to order confirmation page
-      navigate('/OrderConfirmation');
-      console.log("productId",productId)
+      //  Redirect to order confirmation page
+      //navigate('/OrderConfirmation?productId=${productId}');
+      console.log("imageId",imageId)
     } catch (error:any) {
         console.error('Error processing order:', error.message);
         // Handle error: Display an error message to the user
@@ -68,7 +73,7 @@ const AddToCart = () => {
               <p className="text-gray-600">Cost: Rs.{product.product_cost}</p>
               <div className="flex justify-between items-center mt-4">
             
-              <button className="bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleBuyNowClick(product.product_id)}>
+              <button className="bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleBuyNowClick(product.image_id)}>
                  Buy now
                 </button>
                 <span className="text-gray-600">Size: {product.product_size}</span>

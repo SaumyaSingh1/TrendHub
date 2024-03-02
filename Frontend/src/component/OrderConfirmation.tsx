@@ -1,43 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { backendUrl } from '../utils/config';
 import axios from 'axios';
 
-function OrderConfirmation() {
-  const [products, setProducts] = useState([]);
+const OrderConfirmation = () => {
+  const location = useLocation();
+  const imageId = new URLSearchParams(location.search).get("imageId");
+
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    const fetchProductData = async () => {
-      try {
-        const response = await axios.get(`${backendUrl}/api/checkout`, {
-          withCredentials: true
-        });
-        const { productDetails } = response.data;
-        setProducts(productDetails.rows);
-      } catch (error) {
-        console.error('Error fetching product data:', error);
-      }
-    };
+    if (imageId) {
+      fetchProductDetails(imageId);
+    }
+  }, [imageId]);
 
-    fetchProductData();
-  }, []);
-// Function to handle adding a product to the selected products state
-const handleAddToCart = (product) => {
-  setSelectedProducts([...selectedProducts, product]);
-};
+  const fetchProductDetails = async (imageId) => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/product/${imageId}`, {
+        withCredentials: true
+      });
+      const productData = response.data.product.rows[0]; // Access the nested product object
+      setProduct(productData); // Update the product state variable
+      console.log("productData", productData);
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+    }
+  };
+
   return (
     <div>
       <h2>Order Confirmation</h2>
-      <div>
-        {products.map(product => (
-          <div key={product.product_id}>
-            <h3>{product.product_name}</h3>
-            <img src={product.product_image} alt={product.product_name} />
-            <p>Cost: {product.product_cost}</p>
-            <p>Size: {product.product_size}</p>
-            {/* Add more product details as needed */}
-          </div>
-        ))}
-      </div>
+      {product && (
+        <div>
+          <h3>{product.product_name}</h3>
+          <img src={product.product_image} alt={product.product_name} />
+          <p>Cost: Rs.{product.product_cost}</p>
+          <p>Size: {product.product_size}</p>
+          {/* Add more details as needed */}
+        </div>
+      )}
     </div>
   );
 }

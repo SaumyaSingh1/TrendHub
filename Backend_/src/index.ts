@@ -11,6 +11,7 @@ import * as dotenv from "dotenv"
  //import paymentRouter from './routes/payment'
  import cartRouter from'./routes/cartRoute'
 import checkoutRouter from './routes/checkout'
+import productIdRouter from './routes/products'
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -63,7 +64,7 @@ app.use('/auth', authRouter);
 
  app.use('/api',productRouter)
 
-
+app.use('/api',productIdRouter)
 app.use('/api',wishlistRouter)
 
 app.use('/api',cartRouter)

@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import query from '../db/database';
 import { QueryResult } from 'pg'; 
+import authenticateMiddleware from '../middlewares/authMiddleware';
+import { verifyToken } from '../utils/tokenUtils';
 const router = express.Router();
 
 router.post('/product', async (req: Request, res: Response) => {
@@ -54,6 +56,34 @@ router.get('/product', async (req, res) => {
 });
 //to check particular product already exist or not
 
+router.get('/product/:imageId',authenticateMiddleware,async (req:Request, res:Response) => {
+  try {
+    
+    // Verify the access token
+    const accessToken = req.newAccessToken || req.cookies.accessToken;
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
+    const decodedToken = verifyToken(accessToken, accessSecret);
+
+    // Ensure decodedToken is not null
+    if (!decodedToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Extract the userId from the decoded token
+    const userId: number = decodedToken.user_id;
+   // console.log("userId",userId)
+    const imageId = req.params.imageId;
+    const product = await query(`SELECT * FROM product WHERE image_Id=$1`,[imageId])
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json({ product });
+  } catch (error) {
+    console.error('Error fetching product by ID:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
 
 
 export default router;
