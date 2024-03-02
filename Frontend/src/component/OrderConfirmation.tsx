@@ -14,19 +14,26 @@ const OrderConfirmation = () => {
       fetchProductDetails(imageId);
     }
   }, [imageId]);
-
   const fetchProductDetails = async (imageId) => {
     try {
       const response = await axios.get(`${backendUrl}/api/product/${imageId}`, {
         withCredentials: true
       });
-      const productData = response.data.rows[0]; // Access the product details from the response
-      setProduct(productData); // Update the product state variable
+  
+      console.log("Response data:", response.data);
+  
+      const productData = response.data.product;
+      if (productData && productData.rows && productData.rows.length > 0) {
+        const productDetails = productData.rows[0]; // Accessing the first element of the rows array
+        setProduct(productDetails);
+        console.log("Product details:", productDetails);
+      } else {
+        console.error('Invalid product data received:', productData);
+      }
     } catch (error) {
       console.error('Error fetching product details:', error);
     }
   };
-
   const handlePayNowClick = () => {
     // Add logic to handle payment process
     console.log('Payment process initiated');
