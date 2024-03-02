@@ -20,24 +20,34 @@ const OrderConfirmation = () => {
       const response = await axios.get(`${backendUrl}/api/product/${imageId}`, {
         withCredentials: true
       });
-      const productData = response.data.product.rows[0]; // Access the nested product object
+      const productData = response.data.rows[0]; // Access the product details from the response
       setProduct(productData); // Update the product state variable
-      console.log("productData", productData);
     } catch (error) {
       console.error('Error fetching product details:', error);
     }
   };
 
+  const handlePayNowClick = () => {
+    // Add logic to handle payment process
+    console.log('Payment process initiated');
+  };
+
   return (
-    <div>
-      <h2>Order Confirmation</h2>
+    <div className="container mx-auto py-8">
+      <h2 className="text-2xl font-bold mb-4">Order Confirmation</h2>
       {product && (
-        <div>
-          <h3>{product.product_name}</h3>
-          <img src={product.product_image} alt={product.product_name} />
-          <p>Cost: Rs.{product.product_cost}</p>
-          <p>Size: {product.product_size}</p>
-          {/* Add more details as needed */}
+        <div className="bg-white rounded-lg overflow-hidden shadow-md">
+          <div className="p-4">
+            <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
+            <img src={product.product_image} alt={product.product_name} className="w-full h-48 object-cover mb-4" />
+            <p className="text-gray-600 mb-2">Cost: Rs.{product.product_cost}</p>
+            <p className="text-gray-600 mb-4">Size: {product.product_size}</p>
+            {/* Add more details as needed */}
+
+            <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handlePayNowClick}>
+              Pay Now
+            </button>
+          </div>
         </div>
       )}
     </div>
