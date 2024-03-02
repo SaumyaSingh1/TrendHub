@@ -5,13 +5,15 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const AddToCart = () => {
-  const navigate=useNavigate();
+  // Using the useNavigate hook for navigation
+  const navigate = useNavigate();
+  // State variables for products, userId, and total price
   const [products, setProducts] = useState([]);
   const [userId, setUserId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
 
-
   useEffect(() => {
+    // Fetching cart data from the backend
     const fetchCart = async () => {
       try {
         const response = await axios.get(`${backendUrl}/api/carts`, {
@@ -19,11 +21,11 @@ const AddToCart = () => {
         });
 
         const { products, userId } = response.data;
+        // Setting fetched data to state variables
         setProducts(products);
-        console.log(products)
         setUserId(userId);
 
-        // Calculate the total price when cart is fetched
+        // Calculating total price of products in the cart
         const total = products.reduce((acc, curr) => acc + curr.product_cost, 0);
         setTotalPrice(total);
         
@@ -35,27 +37,26 @@ const AddToCart = () => {
     fetchCart();
   }, []);
 
- const handleBuyNowClick = async (imageId) => {
-  try {
-    const response = await axios.post(`${backendUrl}/api/checkout`, { imageId },{
-      withCredentials:true
-    });
+  // Function to handle the Buy Now button click
+  const handleBuyNowClick = async (imageId) => {
+    try {
+      const response = await axios.post(`${backendUrl}/api/checkout`, { imageId },{
+        withCredentials: true
+      });
   
-        if (!response) {
-            throw new Error('Failed to process order');
-        }
-        const orderConfirmationUrl = `http://localhost:5173/OrderConfirmation?imageId=${imageId}`;
-         window.location.href = orderConfirmationUrl;
-       
+      if (!response) {
+          throw new Error('Failed to process order');
+      }
+      // Redirecting to order confirmation page after successful checkout
+      const orderConfirmationUrl = `http://localhost:5173/OrderConfirmation?imageId=${imageId}`;
+      window.location.href = orderConfirmationUrl;
 
-      //  Redirect to order confirmation page
-      //navigate('/OrderConfirmation?productId=${productId}');
       console.log("imageId",imageId)
-    } catch (error:any) {
+    } catch (error) {
         console.error('Error processing order:', error.message);
         // Handle error: Display an error message to the user
-    }}
-
+    }
+  }
 
   return (
     <div className="container mx-auto py-8">
@@ -72,9 +73,8 @@ const AddToCart = () => {
               <Link to={`/details/${product.image_id}`} className="text-lg font-semibold mb-2">{product.product_name}</Link>
               <p className="text-gray-600">Cost: Rs.{product.product_cost}</p>
               <div className="flex justify-between items-center mt-4">
-            
-              <button className="bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleBuyNowClick(product.image_id)}>
-                 Buy now
+                <button className="bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleBuyNowClick(product.image_id)}>
+                  Buy now
                 </button>
                 <span className="text-gray-600">Size: {product.product_size}</span>
               </div>
