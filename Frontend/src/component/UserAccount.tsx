@@ -31,30 +31,45 @@ function UserAccount() {
       // Handle logout error (e.g., show error message)
     }
   };
-
   return (
     <div className="container mx-auto px-4 py-8">
       {isLoggedIn ? (
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Your Orders</h2>
-          {/* Render the orders component here */}
-        {/* <Link to="/" >  */}
-         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleLogout}>
-            Logout
+          <Link to='/orders'>
+            <button className="bg-yellow-500 hover:bg-yellow-800 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2 mb-4">
+              <span className="material-icons text-xl">arrow_right</span>
+              <span className="text-lg">Your Orders</span>
+            </button>
+          </Link>
+          <button className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2" onClick={handleLogout}>
+            <span className="material-icons text-xl">logout</span>
+            <span className="text-lg">Logout</span>
           </button>
-{/* </Link> */}
         </div>
       ) : (
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Welcome</h2>
-          <p className="mb-4">Please sign in to view your orders.</p>
-         <Link to="/login" ><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
-            Login
-          </button></Link>
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Welcome</h2>
+            <p className="mb-4">Please sign in to view your orders.</p>
+            <Link to="/login">
+              <button className="bg-yellow-500 hover:bg-yellow-800 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2">
+                <span className="material-icons text-xl">login</span>
+                <span className="text-lg">Login</span>
+              </button>
+            </Link>
+          </div>
+          <div>
+            <p>OR</p>
+            <Link to="/signup">
+              <button className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2 mt-4">
+                <span className="material-icons text-xl">person_add</span>
+                <span className="text-lg">Signup</span>
+              </button>
+            </Link>
+          </div>
         </div>
       )}
     </div>
   );
-}
-
+      }
 export default UserAccount;

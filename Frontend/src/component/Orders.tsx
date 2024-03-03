@@ -30,7 +30,7 @@ function Orders() {
                     <img className="w-full h-48 object-cover" src={product.product_image} alt={product.product_name} />
                     <div className="p-4">
                         <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
-                        <p className="text-gray-700 mb-2">Price: ${product.product_cost}</p>
+                        <p className="text-gray-700 mb-2">Price: Rs.{product.product_cost}</p>
                         <p className="text-gray-700">Size: {product.product_size}</p>
                     </div>
                 </div>
