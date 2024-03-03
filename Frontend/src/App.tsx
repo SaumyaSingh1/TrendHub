@@ -12,7 +12,7 @@ import AddToCart from './component/AddToCart';
 import UserAccount from './component/UserAccount';
 import Orders from './component/Orders';
 import OrderConfirmation from './component/OrderConfirmation';
-
+import Payment from './component/Payment';
 function App() {
   return (
     // Router component to enable routing
@@ -43,6 +43,7 @@ function App() {
             <Route path="/orders" element={<Orders />} />
             {/* Route for order confirmation page */}
             <Route path="/OrderConfirmation" element={<OrderConfirmation/>}/>
+            <Route path="/payment" element={<Payment/>}/>
           </Route>
         </Routes>
       </ProductProvider>

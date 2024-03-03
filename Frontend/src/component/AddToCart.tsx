@@ -52,7 +52,7 @@ const AddToCart = () => {
       window.location.href = orderConfirmationUrl;
 
       console.log("imageId",imageId)
-    } catch (error) {
+    } catch (error:any) {
         console.error('Error processing order:', error.message);
         // Handle error: Display an error message to the user
     }

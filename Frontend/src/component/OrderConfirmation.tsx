@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { backendUrl } from '../utils/config';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 const OrderConfirmation = () => {
   const location = useLocation();
   const imageId = new URLSearchParams(location.search).get("imageId");
@@ -34,11 +34,31 @@ const OrderConfirmation = () => {
       console.error('Error fetching product details:', error);
     }
   };
-  const handlePayNowClick = () => {
-    // Add logic to handle payment process
-    console.log('Payment process initiated');
+  const handlePayNowClick = async (productId:number) => {
+    try {
+      // Initiate the payment process by sending a request to the backend
+      const response = await axios.post(`${backendUrl}/api/payment`, {
+        productId: productId,
+      }, {
+        withCredentials: true, // Ensure credentials are sent along with the request
+      });
+      console.log('handlePayNowClick:', handlePayNowClick);
+      console.log('product.product_id:', productId);
+      
+      // Check if the request was successful
+      if (response.status === 200) {
+        console.log('Payment process initiated successfully');
+        // Add logic to handle the response, such as redirecting the user to the payment gateway
+      } else {
+        // Handle error if the payment process couldn't be initiated
+        console.error('Failed to initiate payment process');
+      }
+    } catch (error) {
+      // Handle any errors that occur during the payment process
+      console.error('Error initiating payment process:', error);
+    }
   };
-
+  
   return (
     <div className="container mx-auto py-8">
       <h2 className="text-2xl font-bold mb-4">Order Confirmation</h2>
@@ -51,9 +71,9 @@ const OrderConfirmation = () => {
             <p className="text-gray-600 mb-4">Size: {product.product_size}</p>
             {/* Add more details as needed */}
 
-            <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handlePayNowClick}>
+            <Link to='/payment'><button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handlePayNowClick(product.product_id)}>
               Pay Now
-            </button>
+            </button></Link>
           </div>
         </div>
       )}
