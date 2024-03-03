@@ -13,12 +13,14 @@ import UserAccount from './component/UserAccount';
 import Orders from './component/Orders';
 import OrderConfirmation from './component/OrderConfirmation';
 import Payment from './component/Payment';
+import { AuthProvider } from './context/AuthContext';
 function App() {
   return (
     // Router component to enable routing
     <Router>
       {/* Provider component to provide product context to all components */}
       <ProductProvider>
+        <AuthProvider>
         {/* Routes component to define various routes */}
         <Routes>
           {/* Layout component for common layout */}
@@ -46,6 +48,7 @@ function App() {
             <Route path="/payment" element={<Payment/>}/>
           </Route>
         </Routes>
+        </AuthProvider>
       </ProductProvider>
     </Router>
   );

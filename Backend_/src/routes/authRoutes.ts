@@ -2,8 +2,8 @@ import { Router, Request, Response } from 'express';
 import customer from '../models/customer';
 import query from '../db/database';
 import bcrypt from 'bcrypt';
-import { generateAccessToken, generateRefreshToken } from '../utils/tokenUtils';
-
+import { generateAccessToken, generateRefreshToken,verifyToken} from '../utils/tokenUtils';
+import authenticateMiddleware from '../middlewares/authMiddleware';
 const router = Router();
 
 // Signup route
@@ -99,5 +99,46 @@ router.post('/login', async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
+// Logout Route
+router.post('/logout', authenticateMiddleware,  async (req: Request, res: Response) => {
+    try {
+      // The authentication middleware will handle token refresh if needed
+  
+      // Verify the access token from cookies
+      const accessToken = req.newAccessToken || req.cookies.accessToken;
+      const accessSecret = process.env.ACCESS_TOKEN_SECRET as string; // Use your environment variable
+  
+      // Log the access token
+      console.log('Access Token:', accessToken);
+  
+      // Verify the access token
+      const decodedToken = verifyToken(accessToken, accessSecret);
+  
+      // Log the decoded token
+      console.log('Decoded Token:', decodedToken);
+  
+      // If the token is invalid or expired, return an unauthorized response
+      if (!decodedToken) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+  
+      // Extract the user ID from the decoded token
+      const userId: number = decodedToken.user_id;
+  
+      // Clear the refresh token in the database 
+      await query('UPDATE customer SET refresh_token = NULL WHERE user_id = $1', [userId]);
+  
+      // Clear the access and refresh tokens from cookies
+      res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'strict' });
+      res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'strict' });
+  console.log("logged out")
+      // Respond with a successful logout message
+      res.status(200).json({ message: 'Logout successful' });
+    } catch (error: any) {
+      // Log and respond with an internal server error if an exception occurs
+      console.error('Error during logout:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
 export default router;
