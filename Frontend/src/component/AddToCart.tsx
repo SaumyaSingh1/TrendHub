@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { backendUrl } from '../utils/config';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
+// Define the interface for the Product type
+interface Product {
+  product_id: number;
+  image_id: string;
+  product_image: string;
+  product_name: string;
+  product_cost: number;
+  product_size: string;
+}
 
 const AddToCart = () => {
-  // Using the useNavigate hook for navigation
-  const navigate = useNavigate();
   // State variables for products, userId, and total price
-  const [products, setProducts] = useState([]);
-  const [userId, setUserId] = useState(null);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]); // Specify the type as Product[]
+  const [userId, setUserId] = useState<number | null>(null);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   useEffect(() => {
     // Fetching cart data from the backend
@@ -26,9 +33,8 @@ const AddToCart = () => {
         setUserId(userId);
 
         // Calculating total price of products in the cart
-        const total = products.reduce((acc, curr) => acc + curr.product_cost, 0);
+        const total = products.reduce((acc:number, curr:any) => acc + curr.product_cost, 0);
         setTotalPrice(total);
-        
       } catch (error) {
         console.error('Error fetching cart:', error);
       }
@@ -38,23 +44,23 @@ const AddToCart = () => {
   }, []);
 
   // Function to handle the Buy Now button click
-  const handleBuyNowClick = async (imageId) => {
+  const handleBuyNowClick = async (imageId: string) => {
     try {
-      const response = await axios.post(`${backendUrl}/api/checkout`, { imageId },{
+      const response = await axios.post(`${backendUrl}/api/checkout`, { imageId }, {
         withCredentials: true
       });
-  
+
       if (!response) {
-          throw new Error('Failed to process order');
+        throw new Error('Failed to process order');
       }
       // Redirecting to order confirmation page after successful checkout
       const orderConfirmationUrl = `http://localhost:5173/OrderConfirmation?imageId=${imageId}`;
       window.location.href = orderConfirmationUrl;
 
-      console.log("imageId",imageId)
-    } catch (error:any) {
-        console.error('Error processing order:', error.message);
-        // Handle error: Display an error message to the user
+      console.log("imageId", imageId)
+    } catch (error: any) {
+      console.error('Error processing order:', error.message);
+      // Handle error: Display an error message to the user
     }
   }
 

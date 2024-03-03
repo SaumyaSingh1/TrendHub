@@ -1,40 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { backendUrl } from '../utils/config';
+import  { useState, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { backendUrl } from '../utils/config';
+
+interface Product {
+  product_id: number;
+  product_name: string;
+  product_image: string;
+  product_cost: number;
+  product_size: string;
+}
+
 const OrderConfirmation = () => {
   const location = useLocation();
   const imageId = new URLSearchParams(location.search).get("imageId");
 
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null); // Specify the type of product
 
   useEffect(() => {
-    if (imageId) {
-      fetchProductDetails(imageId);
-    }
-  }, [imageId]);
-  const fetchProductDetails = async (imageId) => {
-    try {
-      const response = await axios.get(`${backendUrl}/api/product/${imageId}`, {
-        withCredentials: true
-      });
+    const fetchProductDetails = async (imageId: string | null) => { // Specify the type of imageId
+      try {
+        if (imageId) {
+          const response = await axios.get(`${backendUrl}/api/product/${imageId}`, {
+            withCredentials: true
+          });
   
-      console.log("Response data:", response.data);
+          console.log("Response data:", response.data);
   
-      const productData = response.data.product;
-      if (productData && productData.rows && productData.rows.length > 0) {
-        const productDetails = productData.rows[0]; // Accessing the first element of the rows array
-        setProduct(productDetails);
-        console.log("Product details:", productDetails);
-      } else {
-        console.error('Invalid product data received:', productData);
+          const productData = response.data.product;
+          if (productData && productData.rows && productData.rows.length > 0) {
+            const productDetails: Product = productData.rows[0]; // Specify the type of productDetails
+            setProduct(productDetails);
+            console.log("Product details:", productDetails);
+          } else {
+            console.error('Invalid product data received:', productData);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching product details:', error);
       }
-    } catch (error) {
-      console.error('Error fetching product details:', error);
-    }
-  };
-  const handlePayNowClick = async (productId:number) => {
+    };
+
+    fetchProductDetails(imageId);
+  }, [imageId]);
+
+  const handlePayNowClick = async (productId: number) => {
     try {
       // Initiate the payment process by sending a request to the backend
       const response = await axios.post(`${backendUrl}/api/payment`, {
@@ -42,8 +52,6 @@ const OrderConfirmation = () => {
       }, {
         withCredentials: true, // Ensure credentials are sent along with the request
       });
-      console.log('handlePayNowClick:', handlePayNowClick);
-      console.log('product.product_id:', productId);
       
       // Check if the request was successful
       if (response.status === 200) {

@@ -28,7 +28,7 @@ const SignupForm = () => {
     };
 
     try {
-      const response = await axios.post(backendUrl+'/auth/signup', userData);
+     await axios.post(backendUrl+'/auth/signup', userData);
 
       console.log('User signed up successfully');
       // Redirect or show success message

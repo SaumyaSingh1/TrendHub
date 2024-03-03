@@ -1,18 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react';
+import  { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductContext } from '../context/ProductContext';
 import { backendUrl } from '../utils/config';
 
 function Details() {
- let {  productId } = useParams();
+ 
+
+  const { productId } = useParams();
+  console.log('productId:', productId);
+
   const {  products } = useContext(ProductContext);
   const product = products.find(product => product.id === productId);
   const [like, setLike] = useState(false);
   const [cart, setCart] = useState(false);
   console.log('productId:', productId);
-  const productIdNumericPart = productId.replace(/\D/g, '');
+  const productIdNumericPart = productId? productId.replace(/\D/g, ''):'';
   // Convert to integer
-  const productIdInt = parseInt(productIdNumericPart, 10);
+  const productIdInt = productIdNumericPart? parseInt(productIdNumericPart, 10):0;
 console.log(productIdInt);
 
   const handleAddToWishlist = async () => {

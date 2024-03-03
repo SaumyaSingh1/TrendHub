@@ -1,0 +1,57 @@
+CREATE TABLE customer (
+  user_id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  name VARCHAR(255),
+  address VARCHAR(255),
+  contact INT,
+  refresh_token VARCHAR(255),
+  account_created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Kolkata') NOT NULL
+);
+
+CREATE TABLE product (
+  product_id SERIAL PRIMARY KEY NOT NULL,
+  products_type VARCHAR(255),
+  product_name VARCHAR(255),
+  product_image VARCHAR(255),
+  product_cost INT,
+  product_size VARCHAR(255),
+  Quantity INT,
+  stock INT,
+  image_id INT
+);
+CREATE TABLE add_to_cart (
+  cart_id SERIAL PRIMARY KEY NOT NULL,
+  product_id INT,
+  user_id INT,
+  delivery_estimated DATE,
+  FOREIGN KEY (product_id) REFERENCES product(product_id),
+  FOREIGN KEY (user_id) REFERENCES customer(user_id)
+);
+CREATE TABLE wishlist (
+  wishlist_id SERIAL PRIMARY KEY NOT NULL,
+  product_id INT,
+  user_id INT,
+  FOREIGN KEY (product_id) REFERENCES product(product_id),
+  FOREIGN KEY (user_id) REFERENCES customer(user_id)
+);
+CREATE TABLE orders (
+  order_id SERIAL PRIMARY KEY NOT NULL,
+  product_id INT,
+  user_id INT,
+  payment_id INT,
+  status VARCHAR(255),
+  order_date date,
+  FOREIGN KEY (product_id) REFERENCES product(product_id),
+  FOREIGN KEY (user_id) REFERENCES customer(user_id),
+  FOREIGN KEY (payment_id) REFERENCES payment(payment_id)
+);
+CREATE TABLE payment (
+  payment_id SERIAL PRIMARY KEY NOT NULL,
+  product_id INT,
+  user_id INT,
+  order_id INT,
+  FOREIGN KEY (product_id) REFERENCES product(product_id),
+  FOREIGN KEY (user_id) REFERENCES customer(user_id),
+   FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
