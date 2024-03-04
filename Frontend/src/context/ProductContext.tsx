@@ -32,7 +32,10 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(`https://api.unsplash.com/search/photos?client_id=${import.meta.env.VITE_UNSPLASH_CLIENT_ID}&query=${encodeURIComponent(category)}&orientation=portrait`);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 063cc6dd1ea4bb092071846f69e3a95189146631
         
         if (!response.ok) {
           throw new Error('Failed to fetch products');
