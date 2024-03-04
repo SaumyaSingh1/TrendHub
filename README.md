@@ -22,10 +22,15 @@ Rest assured that your personal information is safe with TrendHub. Our backend i
 ## Tech Stack
 **Frontend Dependencies**
 React: A powerful JavaScript library for building user interfaces.
+
 React Router Dom: Declarative routing for React applications.
+
 Axios: Promise-based HTTP client for making requests to the server.
+
 Tailwind CSS: A utility-first CSS framework for building custom designs without ever leaving your HTML.
+
 React Icons: SVG icons as React components, making it easy to customize icons in your application.
+
 **Backend Dependencies**
 Node.js: A runtime environment for executing JavaScript code server-side.
 Express: Fast, unopinionated, minimalist web framework for Node.js.
