@@ -3,10 +3,13 @@
 
 ## Key Features
 🌟 **Interactive User Interface** TrendHub boasts a visually stunning and highly responsive user interface, designed to provide an immersive shopping experience. Powered by Tailwind CSS, which adopts a mobile-first approach, our interface ensures seamless navigation and intuitive controls across all devices. Users can effortlessly explore products and make purchases with ease, whether they're on a desktop, tablet, or smartphone. With Tailwind CSS for custom designs, TrendHub delivers a consistent and optimized experience for every user, regardless of their device
+
 🖼️ **Dynamic Product Gallery**
 Powered by the Unsplash API, TrendHub showcases a vast collection of high-quality product images, ensuring that every item is presented in its best light. From fashion to electronics, our diverse range of products caters to every taste and preference.
+
 ❤️ **Wishlist & Cart Management**
 Never miss out on your favorite items! TrendHub allows users to create wishlists, bookmarking their most coveted products for future reference. Additionally, our streamlined cart management system makes it easy to add, remove, and modify items, ensuring a hassle-free shopping experience.
+
 🛒 **One-Click Order**
 With TrendHub's "Order Now" feature, purchasing your favorite products is just a click away. Simply add items to your cart, proceed to checkout, and voilà! Your order will be swiftly processed, ready to be shipped to your doorstep.
 
