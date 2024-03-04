@@ -33,10 +33,15 @@ Rest assured that your personal information is safe with TrendHub. Our backend i
 
 ## Backend Dependencies
 **Node.js**: A runtime environment for executing JavaScript code server-side.
+
 **Express**: Fast, unopinionated, minimalist web framework for Node.js.
+
 **PostgreSQL**: A powerful, open-source relational database system.
+
 **Bcrypt**: A library for hashing passwords securely.
+
 **JSON Web Token (jsonwebtoken)**: JSON Web Token implementation for Node.js.
+
 **PG**: Non-blocking PostgreSQL client for Node.js.
 ### Getting Started
 -Clone this repository to your local machine.
