@@ -45,10 +45,15 @@ Rest assured that your personal information is safe with TrendHub. Our backend i
 **PG**: Non-blocking PostgreSQL client for Node.js.
 ### Getting Started
 -Clone this repository to your local machine.
+
 -Install frontend dependencies using npm install.
+
 -Install backend dependencies using npm install in the backend directory.
+
 -Set up your PostgreSQL database and update the configuration in the backend.
+
 -Start the backend server with npm run dev and the frontend with npm start.
+
 #### Explore TrendHub and experience the future of online shopping!
 Contributing
 We welcome contributions from developers of all skill levels. Whether it's fixing bugs, implementing new features, or improving documentation, your contributions are valuable to us. Check out our contribution guidelines to get started!
