@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { backendUrl } from '../utils/config';
 import axios from 'axios';
@@ -12,8 +12,8 @@ interface Product {
 }
 
 const Wishlist = () => {
-  const [products, setProducts] = useState<Product[]>([]); // Specify the type of products
-  const [userId, setUserId] = useState<string | null>(null); // Specify the type of userId
+  const [products, setProducts] = useState<Product[]>([]);
+  const [userId, setUserId] = useState<number| null>(null);
 
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -38,7 +38,7 @@ const Wishlist = () => {
       <h2 className="text-2xl font-bold mb-4">Wishlist</h2>
       <p className="mb-4">User ID: {userId}</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {products.map((product) => ( // Ensure products is not null before mapping
+        {products.map((product: Product) => (
           <div key={product.product_id} className="bg-white rounded-lg overflow-hidden shadow-md">
             <Link to={`/details/${product.image_id}`}>
               <img src={product.product_image} alt={product.product_name} className="w-full h-48 object-cover" />
@@ -55,3 +55,4 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
+
