@@ -1,30 +1,25 @@
-import  { createContext, useContext, useState ,useEffect,ReactNode} from 'react';
-import Cookies from 'js-cookie'
-// interface Product {
-//   product_id: number;
-//   product_image: string;
-//   product_name: string;
-//   product_cost: number;
-//   product_size: string;
-// }
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import Cookies from 'js-cookie';
+
 interface AuthProviderProps {
-  children: ReactNode; // This defines the type of the 'children' prop
+  children: ReactNode;
 }
 
 interface AuthContextType {
   isLoggedIn: boolean;
   logout: () => void;
 }
+
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
   logout: () => {}
-});;
+});
 
 export const useAuth = () => {
   return useContext(AuthContext);
 }
 
-export const AuthProvider:React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -43,7 +38,7 @@ export const AuthProvider:React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn,logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, logout }}>
       {children}
     </AuthContext.Provider>
   );
