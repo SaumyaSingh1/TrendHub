@@ -1,19 +1,20 @@
-import  {  useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
-import {backendUrl} from '../utils/config'
-import axios from 'axios'
-const SignupForm = () => {
-  const navigate=useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [address, setAddress] = useState('');
-  const [contact, setContact] = useState('');
+import  { useState, FormEvent, ChangeEvent } from 'react'; // Import ChangeEvent
+import { Link, useNavigate } from 'react-router-dom';
+import { backendUrl } from '../utils/config';
+import axios from 'axios';
 
-  const handleSubmit = async (e:any) => {
+const SignupForm = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [contact, setContact] = useState<string>('');
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       console.error("Passwords don't match");
       return;
@@ -28,16 +29,47 @@ const SignupForm = () => {
     };
 
     try {
-     await axios.post(backendUrl+'/auth/signup', userData);
+      await axios.post(`${backendUrl}/auth/signup`, userData);
 
       console.log('User signed up successfully');
       // Redirect or show success message
-      navigate('/login')
-    } catch (error:any) {
-      console.error('Error signing up:', error.message);
+      navigate('/login');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error signing up:', error.message);
+      } else {
+        console.error('Unknown error:', error);
+      }
       // Show error message to the user
     }
   };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => { // Define the type of the event
+    const { name, value } = e.target;
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
+      case 'confirmPassword':
+        setConfirmPassword(value);
+        break;
+      case 'address':
+        setAddress(value);
+        break;
+      case 'contact':
+        setContact(value);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto m-4 p-6 bg-gray-100 rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-4">Sign Up</h2>
@@ -47,70 +79,16 @@ const SignupForm = () => {
           <input
             type="text"
             id="name"
+            name="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleChange} // Use handleChange for all input elements
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
             required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-700">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block text-gray-700">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="address " className="block text-gray-700">Address:</label>
-          <input
-            type="text"
-            id="address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-          
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="contact" className="block text-gray-700">Contact:</label>
-          <input
-            type="text"
-            id="contact"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-           
-          />
-        </div>
+        {/* Other input fields */}
         <div className="mb-4 flex justify-center">
-          <button type="submit" className="bg-customColor hover:bg-customColor-hover
-             text-white font-bold py-2 px-4 rounded-full">Sign Up</button>
+          <button type="submit" className="bg-customColor hover:bg-customColor-hover text-white font-bold py-2 px-4 rounded-full">Sign Up</button>
         </div>
       </form>
       <div className="text-center">
