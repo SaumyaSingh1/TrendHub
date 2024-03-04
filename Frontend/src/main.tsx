@@ -1,11 +1,11 @@
-import React from 'react' //core React library that provides the fundamental building blocks for creating components
-import ReactDOM from 'react-dom/client'//used to render components in DOM
-import './index.css'
-import App from './App'
+import React from 'react'; // Core React library that provides the fundamental building blocks for creating components
+import ReactDOM from 'react-dom'; // Used to render components in DOM
+import './index.css';
+import App from './App';
 
-ReactDOM.createRoot(document.getElementById('root')!)// "!" tells typescript this element(here this id root) exists in the document, and it will never be null or undefined."
-.render(
+ReactDOM.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
-)
+  </React.StrictMode>,
+  document.getElementById('root')
+);
