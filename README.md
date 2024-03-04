@@ -20,24 +20,24 @@ Behind the scenes, TrendHub leverages the power of PostgreSQL to securely store 
 Rest assured that your personal information is safe with TrendHub. Our backend is equipped with industry-standard security measures, including bcrypt hashing and JWT authentication, ensuring the confidentiality and integrity of user data.
 
 ## Tech Stack
-**Frontend Dependencies**
-React: A powerful JavaScript library for building user interfaces.
+## Frontend Dependencies
+**React**: A powerful JavaScript library for building user interfaces.
 
-React Router Dom: Declarative routing for React applications.
+**React Router Dom**: Declarative routing for React applications.
 
-Axios: Promise-based HTTP client for making requests to the server.
+**Axios**: Promise-based HTTP client for making requests to the server.
 
-Tailwind CSS: A utility-first CSS framework for building custom designs without ever leaving your HTML.
+**Tailwind CSS**: A utility-first CSS framework for building custom designs without ever leaving your HTML.
 
-React Icons: SVG icons as React components, making it easy to customize icons in your application.
+**React Icons**: SVG icons as React components, making it easy to customize icons in your application.
 
-**Backend Dependencies**
-Node.js: A runtime environment for executing JavaScript code server-side.
-Express: Fast, unopinionated, minimalist web framework for Node.js.
-PostgreSQL: A powerful, open-source relational database system.
-Bcrypt: A library for hashing passwords securely.
-JSON Web Token (jsonwebtoken): JSON Web Token implementation for Node.js.
-PG: Non-blocking PostgreSQL client for Node.js.
+## Backend Dependencies
+**Node.js**: A runtime environment for executing JavaScript code server-side.
+**Express**: Fast, unopinionated, minimalist web framework for Node.js.
+**PostgreSQL**: A powerful, open-source relational database system.
+**Bcrypt**: A library for hashing passwords securely.
+**JSON Web Token (jsonwebtoken)**: JSON Web Token implementation for Node.js.
+**PG**: Non-blocking PostgreSQL client for Node.js.
 ### Getting Started
 -Clone this repository to your local machine.
 -Install frontend dependencies using npm install.
