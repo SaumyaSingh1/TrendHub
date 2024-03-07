@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { backendUrl } from '../utils/config';
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
 interface Product {
   product_id: number;
   image_id: string;
@@ -18,10 +18,14 @@ const Wishlist = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
+        const accessToken = Cookies.get('accessToken'); // Assuming you store the access token in a cookie
+
         const response = await axios.get(`${backendUrl}/api/wishlists`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          },
           withCredentials: true
         });
-
         const { products, userId } = response.data;
         setProducts(products);
         setUserId(userId);
