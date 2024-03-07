@@ -23,7 +23,7 @@ const navigate=useNavigate();
         document.cookie = `refreshToken=${refreshToken}; secure; samesite=strict`;
         document.cookie = `user_id=${userId}; secure; samesite=strict`;
       navigate('/')
-        console.log('userId:', userId, 'user refresh_token:', refreshToken);
+        console.log('userId:', userId, 'user refresh_token:', refreshToken,'accessToken',accessToken);
       }
     } catch (error:any) {
       console.error('Error signing in:', error.message);
