@@ -1,23 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from 'axios'
 import { backendUrl } from '../utils/config';
-
 function UserAccount() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout} = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     // Here, you can perform any additional actions when the component mounts
     // For example, fetching user data or performing additional checks
+    
     setIsLoading(false); // For demonstration, let's assume no additional actions are needed
   }, []);
 
+  if (isLoading) {
+    return <div>Loading...</div>; // Show loading indicator while fetching data or performing checks
+  }
   const handleLogout = async () => {
     try {
       // Call the logout endpoint on the server
-      await axios.post(`${backendUrl}/auth/logout`, {}, { withCredentials: true });
+      await axios.post(`${backendUrl}/auth/logout`,{},{
+        withCredentials:true
+      });
 
       // Once the server successfully logs out the user, trigger the client-side logout
       logout();
@@ -27,12 +31,9 @@ function UserAccount() {
       // Handle logout error (e.g., show error message)
     }
   };
-
   return (
     <div className="container mx-auto px-4 py-8">
-      {isLoading ? (
-        <div>Loading...</div> // Show loading indicator while fetching data or performing checks
-      ) : isLoggedIn ? (
+      {isLoggedIn ? (
         <div>
           <Link to='/orders'>
             <button className="bg-yellow-500 hover:bg-yellow-800 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2 mb-4">
@@ -70,6 +71,5 @@ function UserAccount() {
       )}
     </div>
   );
-}
-
+      }
 export default UserAccount;
