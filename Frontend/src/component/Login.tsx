@@ -1,31 +1,31 @@
 import { useState } from 'react';
-import { Link,useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext'; // Import useAuth hook
 import { backendUrl } from '../utils/config';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-const navigate=useNavigate();
-  const handleSubmit = async (e:any) => {
+  const { login } = useAuth(); // Use the useAuth hook to access authentication context
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    
+
     try {
-      // Make API call to authenticate user
       const response = await axios.post(backendUrl + "/auth/login", { email, password });
 
       if (response.status === 200) {
-        // Login successful, navigate to home page
         const { userId, accessToken, refreshToken } = response.data;
 
-        // Store tokens and user ID in browser cookies
-        document.cookie = `accessToken=${accessToken}; secure; samesite=strict`;
-        document.cookie = `refreshToken=${refreshToken}; secure; samesite=strict`;
-        document.cookie = `user_id=${userId}; secure; samesite=strict`;
-      navigate('/')
-        console.log('userId:', userId, 'user refresh_token:', refreshToken,'accessToken',accessToken);
+        // Call the login function from the useAuth hook to update authentication state
+        login({ userId, accessToken, refreshToken });
+
+        // Navigate to the home page
+        navigate('/');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('Error signing in:', error.message);
       // Handle error (e.g., display error message to the user)
     }

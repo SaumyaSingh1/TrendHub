@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { backendUrl } from '../utils/config';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
 
 interface Product {
   product_id: number;
@@ -13,12 +14,16 @@ interface Product {
 
 const Wishlist = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [userId, setUserId] = useState<number| null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
+  const { accessToken } = useAuth(); // Retrieve the access token from the authentication context
 
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
         const response = await axios.get(`${backendUrl}/api/wishlists`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}` // Include the access token in the request headers
+          },
           withCredentials: true
         });
 
@@ -31,7 +36,7 @@ const Wishlist = () => {
     };
 
     fetchWishlist();
-  }, []);
+  }, [accessToken]); // Add accessToken as a dependency to fetchWishlist useEffect
 
   return (
     <div className="container mx-auto py-8">
@@ -55,4 +60,3 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
-

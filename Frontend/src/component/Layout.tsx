@@ -1,14 +1,18 @@
-import NavBar from './Navbar'
-import { Outlet } from 'react-router-dom'
-import Footer from './Footer'
-function Layout() {
-  return (
-    <>
-      <NavBar/>
-      <Outlet/>
-      <Footer/>
-    </>
-  )
+import NavBar from './Navbar';
+import Footer from './Footer';
+
+interface LayoutProps {
+  children: React.ReactNode; // Define children prop
 }
 
-export default Layout
+function Layout({ children }: LayoutProps) {
+  return (
+    <>
+      <NavBar />
+      {children}
+      <Footer />
+    </>
+  );
+}
+
+export default Layout;

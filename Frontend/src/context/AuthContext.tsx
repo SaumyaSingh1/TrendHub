@@ -7,12 +7,16 @@ interface AuthProviderProps {
 
 interface AuthContextType {
   isLoggedIn: boolean;
+  login: (userData: { userId: string; accessToken: string; refreshToken: string }) => void;
   logout: () => void;
+  accessToken: string; // Add accessToken property
 }
 
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
-  logout: () => {}
+  login: () => {},
+  logout: () => {},
+  accessToken: '' // Default empty string for accessToken
 });
 
 export const useAuth = () => {
@@ -21,24 +25,33 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accessToken, setAccessToken] = useState<string>(''); // State to manage accessToken
 
   useEffect(() => {
-    // Check for refresh token in cookies
     const refreshToken = Cookies.get('refreshToken');
-    if (refreshToken) {
-      // User is logged in if refresh token is present
+    const savedAccessToken = Cookies.get('accessToken'); // Retrieve accessToken from cookies
+    if (refreshToken && savedAccessToken) {
       setIsLoggedIn(true);
+      setAccessToken(savedAccessToken); // Set accessToken from cookies
     }
   }, []);
 
+  const login = (userData: { userId: string; accessToken: string; refreshToken: string }) => {
+    setIsLoggedIn(true);
+    setAccessToken(userData.accessToken); // Set accessToken
+    Cookies.set('refreshToken', userData.refreshToken, { secure: true, sameSite: 'strict' });
+    // You can store the access token and user ID in the state if needed
+  }
+
   const logout = () => {
     setIsLoggedIn(false);
-    // Remove refresh token from cookies
+    setAccessToken(''); // Clear accessToken
     Cookies.remove('refreshToken');
+    // Additional cleanup if needed
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, accessToken }}>
       {children}
     </AuthContext.Provider>
   );
